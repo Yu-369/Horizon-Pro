@@ -4,9 +4,9 @@ Experience YouTube like never before with a stunning cinematic redesign, sleek c
 ## Preview
 
 <img width="1104" height="599" alt="ultramock-2026-05-04T12-06-39-498Z" src="https://github.com/user-attachments/assets/659217be-ecfd-4f99-ae1b-063d15336f1e" />
-
+<br>
 <img width="1334" height="602" alt="ultramock-2026-05-04T12-01-53-434Z" src="https://github.com/user-attachments/assets/fd5a889f-0daa-4eca-8980-6898706aa0b3" />
-
+<br>
 <img width="2732" height="1536" alt="www youtube com_" src="https://github.com/user-attachments/assets/7d20b5eb-f032-43f6-88f4-d2d2fa93e266" />
 
 

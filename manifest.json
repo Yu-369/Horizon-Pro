@@ -1,0 +1,21 @@
+{
+  "manifest_version": 3,
+  "name": "YouTube Pro",
+  "version": "1.0",
+  "description": "Experience YouTube like never before with a stunning cinematic redesign, sleek infinite carousels, and an ultra-modern aesthetic.",
+  "content_scripts": [
+    {
+      "matches": [
+        "*://*.youtube.com/*",
+        "*://youtube.com/*"
+      ],
+      "css": [
+        "content.css"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_end"
+    }
+  ]
+}

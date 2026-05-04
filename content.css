@@ -1,0 +1,548 @@
+/* content.css */
+/* SF Pro as global default */
+
+/* LIGHT THEME */
+html:not([dark]) {
+  --yt-spec-base-background: #FAFAFC !important;
+  --yt-spec-raised-background: #ffffff !important;
+  --yt-spec-menu-background: #ffffff !important;
+  --yt-spec-inverted-background: #0f0f0f !important;
+  --yt-spec-additive-background: rgba(0, 0, 0, 0.04) !important;
+  --yt-spec-text-primary: #111111 !important;
+  --yt-spec-text-secondary: #666666 !important;
+  --yt-spec-text-disabled: #999999 !important;
+  --yt-spec-call-to-action: #000000 !important;
+  --yt-spec-icon-active-other: #111111 !important;
+  --yt-spec-icon-inactive: #666666 !important;
+  --yt-spec-badge-chip-background: #f1f1f4 !important;
+  --yt-spec-touch-response: rgba(0,0,0,0.05) !important;
+  
+  --visiontube-bg: #FAFAFC;
+  --visiontube-surface: #F3F3F5;
+  --visiontube-card: #ffffff;
+  --visiontube-text-primary: #111111;
+  --visiontube-text-secondary: #666666;
+  --visiontube-border: rgba(0,0,0,0.06);
+  --visiontube-active: #E8E8ED;
+  --visiontube-hover: rgba(0,0,0,0.03);
+}
+
+/* DARK THEME */
+html[dark], html[dark="true"] {
+  --yt-spec-base-background: #0d0e10 !important;
+  --yt-spec-raised-background: #101113 !important;
+  --yt-spec-menu-background: #101113 !important;
+  --yt-spec-inverted-background: #ffffff !important;
+  --yt-spec-additive-background: rgba(255, 255, 255, 0.05) !important;
+  --yt-spec-text-primary: #ffffff !important;
+  --yt-spec-text-secondary: #aaaaaa !important;
+  --yt-spec-text-disabled: #666666 !important;
+  --yt-spec-call-to-action: #ffffff !important;
+  --yt-spec-icon-active-other: #ffffff !important;
+  --yt-spec-icon-inactive: #aaaaaa !important;
+  --yt-spec-badge-chip-background: #222222 !important;
+  --yt-spec-touch-response: rgba(255,255,255,0.05) !important;
+
+  --visiontube-bg: #0d0e10;
+  --visiontube-surface: #101113;
+  --visiontube-card: #0d0e10;
+  --visiontube-text-primary: #ffffff;
+  --visiontube-text-secondary: #aaaaaa;
+  --visiontube-border: rgba(255,255,255,0.06);
+  --visiontube-active: #1a1b1d;
+  --visiontube-hover: rgba(255,255,255,0.03);
+}
+
+:root, html, body, ytd-app {
+  --visiontube-side-padding: 32px;
+  --ytd-guide-width: 260px !important;
+}
+
+body, html, * {
+  font-family: "SF Pro Display", "SF Pro Text", "SF Pro", "SF Compact", "San Francisco", -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+}
+/* Ensure important text overrides for SF Pro */
+ytd-app, #page-manager, ytd-watch-flexy, .yt-core-attributed-string {
+  font-family: inherit !important;
+}
+
+body, ytd-app, #page-manager, ytd-watch-flexy {
+  background-color: var(--yt-spec-base-background) !important;
+  color: var(--yt-spec-text-primary) !important;
+}
+
+/* ===================== MASTHEAD ===================== */
+#masthead-container, ytd-masthead, ytd-masthead #background {
+  background-color: var(--yt-spec-base-background) !important;
+  box-shadow: none !important;
+  border-bottom: none !important;
+  border: none !important;
+  height: 56px !important;
+}
+
+/* Symmetrical masthead divider with whitespace on edges */
+#masthead-container::after {
+  content: "" !important;
+  position: absolute !important;
+  bottom: 0 !important;
+  left: 20px !important;
+  right: 20px !important;
+  height: 1px !important;
+  background-color: var(--visiontube-border) !important;
+  transform: scaleY(0.5) !important;
+  transform-origin: bottom !important;
+  pointer-events: none !important;
+  z-index: 100 !important;
+  display: block !important;
+}
+
+/* Keep YouTube logo original */
+ytd-topbar-logo-renderer yt-icon, ytd-logo yt-icon, #logo-icon {
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* Thinner top bar icons (bell, create, etc.) */
+ytd-masthead yt-icon svg {
+  transform: scale(0.75) !important;
+  color: var(--visiontube-text-secondary) !important;
+  opacity: 0.85 !important;
+}
+
+/* Hide the EXTERNAL search icon circle button (separate from the pill) */
+#search-icon-legacy,
+button#search-icon-legacy {
+  display: none !important;
+}
+
+/* Also hide the mic button next to search */
+#voice-search-button {
+  display: none !important;
+}
+
+/* ===================== SEARCH BAR ===================== */
+/* UNIFIED PILL: Container holds background & border radius */
+yt-searchbox .ytSearchboxComponentInputContainer,
+yt-searchbox form.ytSearchboxComponentSearchForm {
+  background: var(--visiontube-surface) !important;
+  border-radius: 40px !important;
+  border: none !important;
+  box-shadow: none !important;
+  height: 44px !important;
+  max-width: 640px !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  transform: translateY(-2px) !important;
+}
+
+yt-searchbox .ytSearchboxComponentInputBox {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  outline: none !important;
+  flex: 1 !important;
+  height: 100% !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Input text — left-aligned with proper padding */
+yt-searchbox input.ytSearchboxComponentInput,
+yt-searchbox input#search {
+  color: var(--visiontube-text-primary) !important;
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  height: 100% !important;
+  margin: 0 !important;
+  padding: 0 8px 0 24px !important;
+  font-size: 15px !important;
+}
+
+/* NUKE every possible search icon inside the search bar (focused & unfocused) */
+yt-searchbox .ytSearchboxComponentInputContainer yt-icon:not(.ytSearchboxComponentSearchButton yt-icon):not(.ytSearchboxComponentClearButton yt-icon),
+yt-searchbox .ytSearchboxComponentInputBoxSearchIcon,
+yt-searchbox .ytSearchboxComponentInnerSearchIcon,
+.ytSearchboxComponentSearchIcon,
+.ytSearchboxComponentInnerSearchIcon {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  visibility: hidden !important;
+  position: absolute !important;
+  pointer-events: none !important;
+}
+
+yt-searchbox input::placeholder {
+  color: var(--visiontube-text-secondary) !important;
+  font-size: 15px !important;
+}
+
+/* Search button — unified inside the pill, no separate circle */
+yt-searchbox button.ytSearchboxComponentSearchButton {
+  background: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+  border-radius: 0 40px 40px 0 !important;
+  padding: 0 24px 0 16px !important;
+  height: 100% !important;
+  margin: 0 !important;
+  cursor: pointer !important;
+}
+
+yt-searchbox button.ytSearchboxComponentSearchButton yt-icon {
+  color: var(--visiontube-text-secondary) !important;
+  width: 20px !important;
+  height: 20px !important;
+}
+
+/* Kill blue flash on search button */
+yt-searchbox .ytSearchboxComponentSearchButtonVisual,
+yt-searchbox .ytSearchboxComponentSearchButtonBackground {
+  display: none !important;
+}
+
+/* Focus: white bg + subtle inset border on the entire container */
+yt-searchbox[has-focus] .ytSearchboxComponentInputContainer,
+yt-searchbox[has-focus] form.ytSearchboxComponentSearchForm {
+  background: var(--visiontube-card) !important;
+  box-shadow: inset 0 0 0 1px var(--visiontube-border) !important;
+  border: none !important;
+}
+
+/* Hide voice/mic */
+yt-searchbox .ytSearchboxComponentVoiceSearchButton,
+yt-button-shape#voice-search-button {
+  display: none !important;
+}
+
+/* Hide 'Create' button */
+yt-button-shape a[href="/upload"], 
+#buttons ytd-topbar-menu-button-renderer:nth-child(1), 
+ytd-masthead button[aria-label="Create"],
+ytd-masthead [title="Create"] {
+  display: none !important;
+}
+
+/* ===================== SIDEBAR ===================== */
+#guide-wrapper, 
+app-drawer#guide, 
+app-drawer,
+#guide-content,
+#guide-inner-content {
+  background-color: var(--yt-spec-base-background) !important;
+  border-right: none !important;
+  border: none !important;
+  box-shadow: none !important;
+  width: 260px !important;
+}
+
+/* Force page manager to respect the 260px sidebar (instead of native 240px) */
+ytd-app[guide-persistent-and-visible] #page-manager,
+ytd-app[guide-persistent-and-visible] ytd-page-manager.ytd-app {
+  margin-left: 260px !important;
+}
+
+#guide-inner-content {
+  padding-top: 16px !important;
+  position: relative !important;
+}
+
+/* Symmetrical sidebar divider with whitespace on top/bottom */
+#guide-inner-content::after {
+  content: "" !important;
+  position: absolute !important;
+  top: 16px !important;
+  bottom: 16px !important;
+  right: 0 !important;
+  width: 1px !important;
+  background-color: var(--visiontube-border) !important;
+  transform: scaleX(0.5) !important;
+  transform-origin: right !important;
+  pointer-events: none !important;
+  z-index: 100 !important;
+  display: block !important;
+}
+
+ytd-guide-entry-renderer {
+  border-radius: 12px !important;
+  margin: 4px 20px !important;
+  padding: 0 !important;
+  transition: background-color 0.2s, transform 0.1s !important;
+}
+
+ytd-guide-entry-renderer tp-yt-paper-item {
+  padding: 0 16px !important;
+  height: 44px !important;
+  border-radius: 12px !important;
+}
+
+ytd-guide-entry-renderer:hover {
+  background-color: var(--visiontube-hover) !important;
+}
+
+ytd-guide-entry-renderer:active {
+  transform: scale(0.98) !important;
+}
+
+ytd-guide-entry-renderer[active] {
+  background-color: var(--visiontube-active) !important;
+}
+
+ytd-guide-entry-renderer[active] yt-icon {
+  color: var(--visiontube-text-primary) !important;
+}
+
+ytd-guide-entry-renderer[active] yt-formatted-string {
+  font-weight: 600 !important;
+  color: var(--visiontube-text-primary) !important;
+}
+
+ytd-guide-entry-renderer yt-formatted-string {
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  color: var(--visiontube-text-secondary) !important;
+}
+
+/* Thinner sidebar icons */
+ytd-guide-entry-renderer yt-icon {
+  width: 20px !important;
+  height: 20px !important;
+  color: var(--visiontube-text-secondary) !important;
+  opacity: 0.85 !important;
+}
+
+/* Sidebar Sections Reorder & Dividers */
+#sections.ytd-guide-renderer {
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Hide the native divider to use our symmetrical pseudo-element */
+ytd-guide-divider-renderer {
+  display: none !important;
+}
+
+#sections.ytd-guide-renderer > ytd-guide-section-renderer {
+  order: 10 !important;
+  border-bottom: none !important;
+  padding: 0 !important;
+  margin-bottom: 8px !important;
+}
+
+/* Symmetrical Divider Pseudo-element */
+#sections.ytd-guide-renderer > ytd-guide-section-renderer::after {
+  content: "";
+  display: block;
+  margin: 8px 20px 0 20px !important;
+  height: 1px;
+  background-color: var(--visiontube-border);
+}
+#sections.ytd-guide-renderer > ytd-guide-section-renderer:last-child::after {
+  display: none !important;
+}
+
+/* Order 1: Home/Shorts */
+#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(1) { order: 1 !important; }
+/* Order 2: Library/You */
+#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(3) { order: 2 !important; }
+/* Order 3: Subscriptions */
+#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2) { order: 3 !important; }
+
+/* Hide all section titles ("You >", etc) EXCEPT Subscriptions */
+#sections.ytd-guide-renderer > ytd-guide-section-renderer #guide-section-title,
+ytd-guide-section-renderer #guide-section-title a[href^="/feed/you"],
+ytd-guide-section-renderer #guide-section-title:has(a[href^="/feed/you"]) {
+  display: none !important;
+}
+
+/* Show Subscriptions Header */
+#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2) #guide-section-title {
+  display: block !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  text-transform: capitalize !important;
+  color: var(--visiontube-text-secondary) !important;
+  margin-top: 12px !important;
+  margin-bottom: 12px !important;
+  letter-spacing: 0px !important;
+  padding-left: 20px !important;
+}
+
+/* Limit to 5 subscriptions */
+#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2) #items > ytd-guide-entry-renderer:nth-child(n+6) {
+  display: none !important;
+}
+
+/* Subscription Avatars */
+ytd-guide-entry-renderer yt-img-shadow, 
+ytd-guide-entry-renderer img,
+.yt-core-image--fill-parent-height {
+  border-radius: 50% !important;
+}
+
+ytd-guide-entry-renderer yt-img-shadow {
+  width: 24px !important;
+  height: 24px !important;
+  margin-right: 12px !important;
+}
+/* Ensure avatars display in sidebar */
+ytd-guide-entry-renderer yt-avatar-shape {
+  display: block !important;
+}
+
+/* ===================== BLUR BAR NUKE ===================== */
+
+ytd-rich-grid-renderer > #header,
+ytd-rich-grid-renderer > #header.ytd-rich-grid-renderer,
+#chips-wrapper,
+iron-selector#chips,
+yt-chip-cloud-renderer,
+ytd-feed-filter-chip-bar-renderer,
+ytd-rich-grid-renderer > #header > *,
+ytd-rich-grid-renderer #header.ytd-rich-grid-renderer,
+#masthead-ad,
+ytd-statement-banner-renderer,
+ytd-banner-promo-renderer,
+ytd-rich-section-renderer:has(ytd-ad-slot-renderer),
+ytd-rich-section-renderer:has(ytd-statement-banner-renderer),
+#frosted-glass,
+.with-chipbar.ytd-app,
+html body #frosted-glass {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  background: transparent !important;
+  height: 0 !important;
+  max-height: 0 !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: hidden !important;
+  position: absolute !important;
+  top: -9999px !important;
+  left: -9999px !important;
+  pointer-events: none !important;
+  z-index: -9999 !important;
+  border: none !important;
+  line-height: 0 !important;
+  font-size: 0 !important;
+}
+
+/* Kill ALL ambient glows */
+#masthead-container,
+#background-glow,
+.ambient-glow,
+#page-manager.ytd-app,
+#ytd-page-manager {
+  box-shadow: none !important;
+}
+
+/* ===================== MAIN CONTENT GRID (Homepage Only) ===================== */
+ytd-browse[page-subtype="home"] #contents.ytd-rich-grid-renderer {
+  padding: 0 var(--visiontube-side-padding) !important;
+  box-sizing: border-box !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  margin: 0 !important;
+}
+
+ytd-browse[page-subtype="home"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 4 !important;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+/* Side video hover */
+.visiontube-side-video {
+  border: 1px solid var(--visiontube-border) !important;
+  background: var(--visiontube-card) !important;
+  transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+.visiontube-side-video:hover {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.06) !important;
+}
+
+/* Row spacing - compact (Homepage Only) */
+ytd-browse[page-subtype="home"] ytd-rich-grid-row {
+  margin-bottom: 24px !important;
+}
+
+ytd-rich-item-renderer {
+  border-radius: 16px !important;
+}
+
+ytd-browse[page-subtype="home"] yt-lockup-view-model, 
+ytd-browse[page-subtype="home"] .yt-lockup-view-model-wiz {
+  width: 100% !important;
+  max-width: 100% !important;
+}
+
+/* Thumbnails */
+ytd-thumbnail, 
+ytd-thumbnail img,
+yt-image,
+yt-image img {
+  border-radius: 12px !important;
+}
+
+/* Time Status Badge */
+ytd-thumbnail-overlay-time-status-renderer,
+.badge-shape-wiz--thumbnail-default {
+  border-radius: 4px !important;
+  background-color: rgba(0, 0, 0, 0.75) !important;
+  font-weight: 600 !important;
+  padding: 2px 4px !important;
+  margin: 4px !important;
+  font-size: 11px !important;
+}
+
+/* Video Metadata - Compact (Scoped only to Homepage/Grid) */
+ytd-rich-grid-renderer #video-title, 
+ytd-rich-grid-renderer .yt-core-attributed-string[role="heading"] {
+  font-weight: 600 !important;
+  font-size: 14px !important;
+  color: var(--visiontube-text-primary) !important;
+  line-height: 1.35 !important;
+  margin-top: 8px !important;
+  display: -webkit-box !important;
+  -webkit-line-clamp: 2 !important;
+  -webkit-box-orient: vertical !important;
+  overflow: hidden !important;
+}
+
+ytd-rich-grid-renderer yt-lockup-metadata-view-model,
+ytd-rich-grid-renderer .yt-lockup-metadata-view-model-wiz {
+  margin-top: 8px !important;
+}
+
+ytd-rich-grid-renderer ytd-channel-name yt-formatted-string, 
+ytd-rich-grid-renderer ytd-video-meta-block span,
+ytd-rich-grid-renderer .yt-core-attributed-string--link-inherit-color,
+ytd-rich-grid-renderer .yt-core-attributed-string--white-space-pre-wrap {
+  font-size: 12px !important;
+  color: var(--visiontube-text-secondary) !important;
+  font-weight: 500 !important;
+}
+
+/* Hide Avatar in Grid */
+ytd-rich-grid-media #avatar-link,
+yt-lockup-metadata-view-model-wiz yt-avatar-shape,
+yt-rich-grid-row yt-avatar-shape {
+  display: none !important;
+}
+
+/* Remove borders from cards */
+ytd-rich-item-renderer {
+  border: none !important;
+  background: transparent !important;
+}

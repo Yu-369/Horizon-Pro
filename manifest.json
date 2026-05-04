@@ -3,11 +3,20 @@
   "name": "YouTube Pro",
   "version": "1.0",
   "description": "Experience YouTube like never before with a stunning cinematic redesign, sleek infinite carousels, and an ultra-modern aesthetic.",
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "youtubepro@example.com",
+      "data_collection_permissions": {
+        "required": [
+          "none"
+        ]
+      }
+    }
+  },
   "content_scripts": [
     {
       "matches": [
-        "*://*.youtube.com/*",
-        "*://youtube.com/*"
+        "*://www.youtube.com/*"
       ],
       "css": [
         "content.css"

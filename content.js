@@ -314,25 +314,11 @@ function buildCarousel() {
   container.style.width = '100%';
   container.style.gridColumn = '1 / -1';
 
-  // Support Trusted Types for modern YouTube
-  if (window.trustedTypes && window.trustedTypes.createPolicy) {
-    if (!window.visiontubePolicy) {
-      try {
-        window.visiontubePolicy = window.trustedTypes.createPolicy('visiontube-policy', { createHTML: s => s });
-      } catch (e) {
-        try { window.visiontubePolicy = window.trustedTypes.createPolicy('default', { createHTML: s => s }); }
-        catch (e2) { }
-      }
-    }
-    if (window.visiontubePolicy) {
-      container.innerHTML = window.visiontubePolicy.createHTML(carouselHTML);
-    } else {
-      const temp = document.createElement('template');
-      temp.innerHTML = carouselHTML;
-      container.appendChild(temp.content);
-    }
-  } else {
-    container.innerHTML = carouselHTML;
+  // Safe DOM insertion — DOMParser avoids innerHTML (AMO compliance)
+  const parser = new DOMParser();
+  const parsed = parser.parseFromString(carouselHTML, 'text/html');
+  while (parsed.body.firstChild) {
+    container.appendChild(document.adoptNode(parsed.body.firstChild));
   }
 
   const contents = feed.querySelector('#contents');

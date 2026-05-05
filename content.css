@@ -1,5 +1,6 @@
-/* content.css */
-/* SF Pro as global default */
+/* content.css — YouTube Pro */
+
+/* ===================== THEME VARIABLES ===================== */
 
 /* LIGHT THEME */
 html:not([dark]) {
@@ -545,4 +546,197 @@ yt-rich-grid-row yt-avatar-shape {
 ytd-rich-item-renderer {
   border: none !important;
   background: transparent !important;
+}
+
+
+/* ================================================================
+   TOGGLEABLE FEATURES — scoped behind body.ytpro-* classes
+   ================================================================ */
+
+/* ── Hide Recommended (Related Videos sidebar on watch page) ── */
+body.ytpro-hide-recommended #secondary #related,
+body.ytpro-hide-recommended #secondary ytd-watch-next-secondary-results-renderer {
+  display: none !important;
+}
+/* Center the video + info when sidebar is hidden */
+body.ytpro-hide-recommended ytd-watch-flexy #columns {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+}
+body.ytpro-hide-recommended ytd-watch-flexy #secondary {
+  display: none !important;
+}
+body.ytpro-hide-recommended ytd-watch-flexy #primary {
+  max-width: 100% !important;
+  flex: 1 !important;
+}
+
+/* ── Hide Live Chat ── */
+body.ytpro-hide-livechat #chat-container,
+body.ytpro-hide-livechat #chat,
+body.ytpro-hide-livechat ytd-live-chat-frame {
+  display: none !important;
+}
+
+/* ── Hide Playlist (sidebar playlist panel) ── */
+body.ytpro-hide-playlist #secondary ytd-playlist-panel-renderer {
+  display: none !important;
+}
+
+/* ── Hide YouTube Shorts ── */
+body.ytpro-hide-shorts ytd-reel-shelf-renderer,
+body.ytpro-hide-shorts ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
+body.ytpro-hide-shorts ytd-rich-section-renderer:has([is-shorts]),
+body.ytpro-hide-shorts ytd-guide-entry-renderer a[title="Shorts"],
+body.ytpro-hide-shorts ytd-mini-guide-entry-renderer a[title="Shorts"],
+body.ytpro-hide-shorts ytd-rich-item-renderer:has(a[href*="/shorts/"]),
+body.ytpro-hide-shorts ytd-video-renderer:has(a[href*="/shorts/"]),
+body.ytpro-hide-shorts ytd-grid-video-renderer:has(a[href*="/shorts/"]) {
+  display: none !important;
+}
+
+/* ── Hide End Screen Videowall ── */
+body.ytpro-hide-endscreen .ytp-endscreen-content,
+body.ytpro-hide-endscreen .html5-endscreen,
+body.ytpro-hide-endscreen .ytp-ce-element {
+  display: none !important;
+}
+
+/* ── Hide End Screen Cards ── */
+body.ytpro-hide-endcards .ytp-cards-teaser,
+body.ytpro-hide-endcards .ytp-cards-button,
+body.ytpro-hide-endcards .ytp-ce-element,
+body.ytpro-hide-endcards .iv-branding,
+body.ytpro-hide-endcards .ytp-cards-button-icon,
+body.ytpro-hide-endcards .ytp-card-content {
+  display: none !important;
+}
+
+/* ── Hide Comments ── */
+body.ytpro-hide-comments ytd-comments#comments,
+body.ytpro-hide-comments ytd-item-section-renderer#sections {
+  display: none !important;
+}
+
+/* ── Hide Mix / Radio Playlists ── */
+body.ytpro-hide-mix ytd-radio-renderer,
+body.ytpro-hide-mix ytd-compact-radio-renderer,
+body.ytpro-hide-mix ytd-rich-item-renderer:has(a[href*="&start_radio=1"]),
+body.ytpro-hide-mix ytd-rich-item-renderer:has(a[href*="&list=RD"]),
+body.ytpro-hide-mix yt-lockup-view-model:has(a[href*="&start_radio=1"]),
+body.ytpro-hide-mix yt-lockup-view-model:has(a[href*="&list=RD"]),
+body.ytpro-hide-mix ytd-compact-video-renderer:has(a[href*="&start_radio=1"]),
+body.ytpro-hide-mix ytd-compact-video-renderer:has(a[href*="&list=RD"]),
+body.ytpro-hide-mix .yt-lockup-view-model-wiz:has(a[href*="&start_radio=1"]),
+body.ytpro-hide-mix .yt-lockup-view-model-wiz:has(a[href*="&list=RD"]),
+body.ytpro-hide-mix .ytpro-mix-item {
+  display: none !important;
+}
+
+/* ── Hide Merch, Tickets, Offers ── */
+body.ytpro-hide-merch ytd-merch-shelf-renderer,
+body.ytpro-hide-merch ytd-offer-module-renderer,
+body.ytpro-hide-merch ytd-ticket-shelf-renderer,
+body.ytpro-hide-merch ytd-donation-shelf-renderer,
+body.ytpro-hide-merch #merchandise-shelf,
+body.ytpro-hide-merch ytd-product-shelf-renderer,
+body.ytpro-hide-merch ytd-shopping-carousel-renderer,
+body.ytpro-hide-merch ytd-shopping-panel-item-renderer,
+body.ytpro-hide-merch ytd-shopping-module-renderer,
+body.ytpro-hide-merch ytd-structured-description-commerce-renderer,
+body.ytpro-hide-merch #ticket-shelf,
+body.ytpro-hide-merch ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-structured-description"] {
+  display: none !important;
+}
+
+/* ── Hide Video Buttons Bar (like, dislike, share, etc.) ── */
+body.ytpro-hide-video-buttons #top-level-buttons-computed,
+body.ytpro-hide-video-buttons ytd-menu-renderer.ytd-video-primary-info-renderer,
+body.ytpro-hide-video-buttons #actions.ytd-watch-metadata,
+body.ytpro-hide-video-buttons ytd-watch-metadata #actions {
+  display: none !important;
+}
+
+/* ── Hide Channel Info (profile + subscribe) ── */
+body.ytpro-hide-channel #owner,
+body.ytpro-hide-channel ytd-video-owner-renderer,
+body.ytpro-hide-channel #upload-info {
+  display: none !important;
+}
+
+/* ── Hide Video Description ── */
+body.ytpro-hide-description #description.ytd-watch-metadata,
+body.ytpro-hide-description ytd-text-inline-expander,
+body.ytpro-hide-description ytd-structured-description-content-renderer,
+body.ytpro-hide-description #description-inline-expander {
+  display: none !important;
+}
+
+/* ── Hide Top Header (entire masthead) ── */
+body.ytpro-hide-top-header #masthead-container,
+body.ytpro-hide-top-header ytd-masthead {
+  display: none !important;
+}
+body.ytpro-hide-top-header #page-manager {
+  margin-top: 0 !important;
+}
+
+/* ── Hide Notification Bell ── */
+body.ytpro-hide-notif-bell ytd-notification-topbar-button-renderer,
+body.ytpro-hide-notif-bell button[aria-label="Notifications"] {
+  display: none !important;
+}
+
+/* ── Hide Explore & Trending ── */
+body.ytpro-hide-explore ytd-guide-entry-renderer a[title="Trending"],
+body.ytpro-hide-explore ytd-guide-entry-renderer a[href="/feed/trending"],
+body.ytpro-hide-explore ytd-guide-entry-renderer a[href="/feed/explore"],
+body.ytpro-hide-explore ytd-guide-entry-renderer a[title="Explore"] {
+  display: none !important;
+}
+
+/* ── Hide "More from YouTube" ── */
+body.ytpro-hide-more-yt #guide-links-primary,
+body.ytpro-hide-more-yt #guide-links-secondary,
+body.ytpro-hide-more-yt #footer,
+body.ytpro-hide-more-yt ytd-guide-renderer #footer,
+body.ytpro-hide-more-yt ytd-guide-section-renderer:has(#guide-links-primary),
+body.ytpro-hide-more-yt #sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(n+4) {
+  display: none !important;
+}
+
+/* ── Hide Playables ── */
+body.ytpro-hide-playables ytd-guide-entry-renderer a[title="Playables"],
+body.ytpro-hide-playables ytd-guide-entry-renderer:has(a[href*="/playables"]),
+body.ytpro-hide-playables ytd-mini-guide-entry-renderer:has(a[href*="/playables"]),
+body.ytpro-hide-playables .ytpro-playables-shelf {
+  display: none !important;
+}
+
+/* ── Hide Irrelevant Search Results (JS Tagged) ── */
+body.ytpro-hide-irrelevant-search .ytpro-irrelevant-search {
+  display: none !important;
+}
+
+/* ── Disable Annotations (CSS portion) ── */
+body.ytpro-disable-annotations .annotation,
+body.ytpro-disable-annotations .ytp-cards-teaser-box,
+body.ytpro-disable-annotations .iv-branding,
+body.ytpro-disable-annotations .ytp-featured-product,
+body.ytpro-disable-annotations .ytp-paid-content-overlay,
+body.ytpro-disable-annotations .ytp-suggested-action-badge,
+body.ytpro-disable-annotations .iv-promo,
+body.ytpro-disable-annotations .ytp-cards-button,
+body.ytpro-disable-annotations .ytp-cards-teaser {
+  display: none !important;
+}
+
+/* ── 3-video grid ── */
+body.ytpro-grid-3 ytd-browse[page-subtype="home"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 3 !important;
+}
+
+/* ── Carousel Disabled Padding ── */
+body:not(.ytpro-carousel-active) ytd-browse[page-subtype="home"] ytd-rich-grid-renderer {
+  padding-top: 24px !important;
 }

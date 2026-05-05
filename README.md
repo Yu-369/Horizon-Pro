@@ -7,10 +7,10 @@ Experience YouTube like never before with a stunning cinematic redesign, sleek c
 <br>
 <img width="2732" height="1536" alt="www youtube com_" src="https://github.com/user-attachments/assets/7d20b5eb-f032-43f6-88f4-d2d2fa93e266" />
 <br>
-<img width="1334" height="602" alt="ultramock-2026-05-04T12-01-53-434Z" src="https://github.com/user-attachments/assets/fd5a889f-0daa-4eca-8980-6898706aa0b3" /><
+<img width="1334" height="602" alt="ultramock-2026-05-04T12-01-53-434Z" src="https://github.com/user-attachments/assets/fd5a889f-0daa-4eca-8980-6898706aa0b3" />
 
 
-## Installation (Unpacked Version)
+> ## Installation (Unpacked Version)
 
 Since the extension is not yet on the Chrome Web Store, you can try it using **Developer Mode**:
 

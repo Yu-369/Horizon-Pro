@@ -4,9 +4,9 @@ Experience YouTube with a stunning cinematic redesign. YouTube Pro transforms th
 
 ![Hero Banner](https://github.com/user-attachments/assets/7d20b5eb-f032-43f6-88f4-d2d2fa93e266)
 
-## 🆕 Latest Release (v1.2.0) — The "Perfect Rhythm" Update
+## 🆕 Latest Release (v1.2.0)
 
-This major update brings the premium YouTube Pro experience to the **Subscriptions page**, introduces system-wide **Google Sans** typography, and overhauls the **Sidebar mechanics** for a truly cinematic feel.
+This major update brings the premium YouTube Pro experience to the **Subscriptions page**, and overhauls the **Sidebar animations** for a truly cinematic feel.
 
 ### 🛠 Full Feature List
 - **YouTube Pro Core**

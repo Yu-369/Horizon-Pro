@@ -4,9 +4,16 @@ Experience YouTube with a stunning cinematic redesign. YouTube Pro transforms th
 
 ![Hero Banner](https://github.com/user-attachments/assets/7d20b5eb-f032-43f6-88f4-d2d2fa93e266)
 
+## 🆕 Latest Release (v1.2.0) — The "Perfect Rhythm" Update
+
+This major update brings the premium YouTube Pro experience to the **Subscriptions page**, introduces system-wide **Google Sans** typography, and overhauls the **Sidebar mechanics** for a truly cinematic feel.
+
 ### 🛠 Full Feature List
 - **YouTube Pro Core**
-  - **Refined Carousel**: Cinematic hero section on the homepage (ON by default).
+  - **Dynamic Featured Carousel**: Cinematic hero section now available on both **Home** and **Subscriptions** feeds.
+  - **Premium Typography**: Native YouTube headings ("Latest", "All subscriptions", etc.) now utilize Google Sans Bold (22px) for a unified, modern aesthetic.
+  - **Cinematic Sidebar**: Rewritten expand/collapse logic with smooth transform transitions and synchronized page manager shifts.
+  - **Smart SPA Navigation**: Intelligent polling ensures the carousel reliably injects during internal site navigation without requiring a page refresh.
   - **3 Videos Per Row**: Toggle between 3 or 4 videos in the home grid for better visibility.
 - **Video Sidebar**
   - **Hide Recommended**: Removes the related videos sidebar on watch pages.

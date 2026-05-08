@@ -73,13 +73,35 @@ const SECTIONS = [
   }
 ];
 
-function makeSVG(inner) {
-  return `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+function createSVGElement(tag, attrs = {}) {
+  const el = document.createElementNS('http://www.w3.org/2000/svg', tag);
+  for (const [key, val] of Object.entries(attrs)) {
+    el.setAttribute(key, val);
+  }
+  return el;
+}
+
+function makeSVGElement(innerPath) {
+  const svg = createSVGElement('svg', {
+    width: '16', height: '16', viewBox: '0 0 24 24',
+    fill: 'none', stroke: 'currentColor', 'stroke-width': '2',
+    'stroke-linecap': 'round', 'stroke-linejoin': 'round'
+  });
+  // Since sec.icon is a string of SVG elements (paths, circles etc),
+  // we can safely parse it if we trust the SECTIONS constant,
+  // but to be truly safe, we'll use a template approach or set it as innerHTML
+  // on a temporary element then move children.
+  // Given SECTIONS is internal, we'll use a safer approach:
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${innerPath}</svg>`, 'image/svg+xml');
+  const children = Array.from(doc.documentElement.childNodes);
+  children.forEach(child => svg.appendChild(document.importNode(child, true)));
+  return svg;
 }
 
 function buildUI(settings) {
   const container = document.getElementById('sections');
-  container.innerHTML = '';
+  container.textContent = '';
 
   SECTIONS.forEach(sec => {
     const section = document.createElement('section');
@@ -91,11 +113,25 @@ function buildUI(settings) {
     const header = document.createElement('button');
     header.className = 'ytpro-section-header';
     header.setAttribute('aria-expanded', isOpen);
-    header.innerHTML = `
-      <span class="ytpro-section-icon">${makeSVG(sec.icon)}</span>
-      <span class="ytpro-section-label">${sec.label}</span>
-      <svg class="ytpro-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
-    `;
+
+    const iconSpan = document.createElement('span');
+    iconSpan.className = 'ytpro-section-icon';
+    iconSpan.appendChild(makeSVGElement(sec.icon));
+
+    const labelSpan = document.createElement('span');
+    labelSpan.className = 'ytpro-section-label';
+    labelSpan.textContent = sec.label;
+
+    const chevron = createSVGElement('svg', {
+      'class': 'ytpro-chevron', width: '14', height: '14',
+      viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor',
+      'stroke-width': '2.5', 'stroke-linecap': 'round', 'stroke-linejoin': 'round'
+    });
+    chevron.appendChild(createSVGElement('polyline', { points: '6 9 12 15 18 9' }));
+
+    header.appendChild(iconSpan);
+    header.appendChild(labelSpan);
+    header.appendChild(chevron);
 
     // Body
     const body = document.createElement('div');
@@ -105,13 +141,27 @@ function buildUI(settings) {
       const val = settings[t.key] !== undefined ? settings[t.key] : (t.defaultVal || false);
       const row = document.createElement('div');
       row.className = 'ytpro-toggle-row';
-      row.innerHTML = `
-        <div class="ytpro-toggle-info">
-          <span class="ytpro-toggle-label">${t.label}</span>
-          <span class="ytpro-toggle-desc">${t.desc}</span>
-        </div>
-        <m3-switch data-key="${t.key}" ${val ? 'checked' : ''}></m3-switch>
-      `;
+
+      const info = document.createElement('div');
+      info.className = 'ytpro-toggle-info';
+
+      const toggleLabel = document.createElement('span');
+      toggleLabel.className = 'ytpro-toggle-label';
+      toggleLabel.textContent = t.label;
+
+      const toggleDesc = document.createElement('span');
+      toggleDesc.className = 'ytpro-toggle-desc';
+      toggleDesc.textContent = t.desc;
+
+      info.appendChild(toggleLabel);
+      info.appendChild(toggleDesc);
+
+      const toggle = document.createElement('m3-switch');
+      toggle.dataset.key = t.key;
+      if (val) toggle.setAttribute('checked', '');
+
+      row.appendChild(info);
+      row.appendChild(toggle);
       body.appendChild(row);
     });
 

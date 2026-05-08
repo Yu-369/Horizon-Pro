@@ -16,20 +16,21 @@ html:not([dark]) {
   --yt-spec-icon-active-other: #111111 !important;
   --yt-spec-icon-inactive: #666666 !important;
   --yt-spec-badge-chip-background: #f1f1f4 !important;
-  --yt-spec-touch-response: rgba(0,0,0,0.05) !important;
-  
+  --yt-spec-touch-response: rgba(0, 0, 0, 0.05) !important;
+
   --visiontube-bg: #FAFAFC;
   --visiontube-surface: #F3F3F5;
   --visiontube-card: #ffffff;
   --visiontube-text-primary: #111111;
   --visiontube-text-secondary: #666666;
-  --visiontube-border: rgba(0,0,0,0.06);
+  --visiontube-border: rgba(0, 0, 0, 0.06);
   --visiontube-active: #E8E8ED;
-  --visiontube-hover: rgba(0,0,0,0.03);
+  --visiontube-hover: rgba(0, 0, 0, 0.03);
 }
 
 /* DARK THEME */
-html[dark], html[dark="true"] {
+html[dark],
+html[dark="true"] {
   --yt-spec-base-background: #0d0e10 !important;
   --yt-spec-raised-background: #101113 !important;
   --yt-spec-menu-background: #101113 !important;
@@ -42,43 +43,79 @@ html[dark], html[dark="true"] {
   --yt-spec-icon-active-other: #ffffff !important;
   --yt-spec-icon-inactive: #aaaaaa !important;
   --yt-spec-badge-chip-background: #222222 !important;
-  --yt-spec-touch-response: rgba(255,255,255,0.05) !important;
+  --yt-spec-touch-response: rgba(255, 255, 255, 0.05) !important;
 
   --visiontube-bg: #0d0e10;
   --visiontube-surface: #101113;
   --visiontube-card: #0d0e10;
   --visiontube-text-primary: #ffffff;
   --visiontube-text-secondary: #aaaaaa;
-  --visiontube-border: rgba(255,255,255,0.06);
+  --visiontube-border: rgba(255, 255, 255, 0.06);
   --visiontube-active: #1a1b1d;
-  --visiontube-hover: rgba(255,255,255,0.03);
+  --visiontube-hover: rgba(255, 255, 255, 0.03);
 }
 
-:root, html, body, ytd-app {
+:root,
+html,
+body,
+ytd-app {
   --visiontube-side-padding: 32px;
   --ytd-guide-width: 260px !important;
 }
 
-body, html, * {
+body,
+html,
+* {
   font-family: "SF Pro Display", "SF Pro Text", "SF Pro", "SF Compact", "San Francisco", -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
+
 /* Ensure important text overrides for SF Pro */
-ytd-app, #page-manager, ytd-watch-flexy, .yt-core-attributed-string {
+ytd-app,
+#page-manager,
+ytd-watch-flexy,
+.yt-core-attributed-string {
   font-family: inherit !important;
 }
 
-body, ytd-app, #page-manager, ytd-watch-flexy {
+body,
+ytd-app,
+#page-manager,
+ytd-watch-flexy {
   background-color: var(--yt-spec-base-background) !important;
   color: var(--yt-spec-text-primary) !important;
 }
 
 /* ===================== MASTHEAD ===================== */
-#masthead-container, ytd-masthead, ytd-masthead #background {
+#masthead-container,
+ytd-masthead,
+ytd-masthead #background {
   background-color: var(--yt-spec-base-background) !important;
   box-shadow: none !important;
   border-bottom: none !important;
   border: none !important;
   height: 56px !important;
+}
+
+/* Force perfect centering of the search bar */
+ytd-masthead #container.ytd-masthead {
+  display: flex !important;
+  justify-content: space-between !important;
+  align-items: center !important;
+}
+
+ytd-masthead #start.ytd-masthead,
+ytd-masthead #end.ytd-masthead {
+  flex: 1 !important;
+}
+
+ytd-masthead #end.ytd-masthead {
+  justify-content: flex-end !important;
+}
+
+ytd-masthead #center.ytd-masthead {
+  flex: 0 1 640px !important;
+  display: flex !important;
+  justify-content: center !important;
 }
 
 /* Symmetrical masthead divider with whitespace on edges */
@@ -98,9 +135,15 @@ body, ytd-app, #page-manager, ytd-watch-flexy {
 }
 
 /* Keep YouTube logo original */
-ytd-topbar-logo-renderer yt-icon, ytd-logo yt-icon, #logo-icon {
+ytd-topbar-logo-renderer yt-icon,
+ytd-topbar-logo-renderer yt-icon svg,
+ytd-logo yt-icon,
+ytd-logo yt-icon svg,
+#logo-icon,
+#logo-icon svg {
   filter: none !important;
   opacity: 1 !important;
+  transform: none !important;
 }
 
 /* Thinner top bar icons (bell, create, etc.) */
@@ -123,6 +166,7 @@ button#search-icon-legacy {
 
 /* ===================== SEARCH BAR ===================== */
 /* UNIFIED PILL: Container holds background & border radius */
+yt-searchbox,
 yt-searchbox .ytSearchboxComponentInputContainer,
 yt-searchbox form.ytSearchboxComponentSearchForm {
   background: var(--visiontube-surface) !important;
@@ -136,7 +180,7 @@ yt-searchbox form.ytSearchboxComponentSearchForm {
   align-items: center !important;
   margin: 0 !important;
   padding: 0 !important;
-  transform: translateY(-2px) !important;
+  outline: none !important;
 }
 
 yt-searchbox .ytSearchboxComponentInputBox {
@@ -226,16 +270,16 @@ yt-button-shape#voice-search-button {
 }
 
 /* Hide 'Create' button */
-yt-button-shape a[href="/upload"], 
-#buttons ytd-topbar-menu-button-renderer:nth-child(1), 
+yt-button-shape a[href="/upload"],
+#buttons ytd-topbar-menu-button-renderer:nth-child(1),
 ytd-masthead button[aria-label="Create"],
 ytd-masthead [title="Create"] {
   display: none !important;
 }
 
 /* ===================== SIDEBAR ===================== */
-#guide-wrapper, 
-app-drawer#guide, 
+#guide-wrapper,
+app-drawer#guide,
 app-drawer,
 #guide-content,
 #guide-inner-content {
@@ -244,6 +288,12 @@ app-drawer,
   border: none !important;
   box-shadow: none !important;
   width: 260px !important;
+}
+
+/* Smooth page manager content shift */
+#page-manager,
+ytd-page-manager.ytd-app {
+  transition: margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
 /* Force page manager to respect the 260px sidebar (instead of native 240px) */
@@ -314,7 +364,8 @@ ytd-guide-entry-renderer yt-formatted-string {
 }
 
 /* Thinner sidebar icons */
-ytd-guide-entry-renderer yt-icon {
+ytd-guide-entry-renderer yt-icon,
+ytd-mini-guide-entry-renderer yt-icon {
   width: 20px !important;
   height: 20px !important;
   color: var(--visiontube-text-secondary) !important;
@@ -332,7 +383,7 @@ ytd-guide-divider-renderer {
   display: none !important;
 }
 
-#sections.ytd-guide-renderer > ytd-guide-section-renderer {
+#sections.ytd-guide-renderer>ytd-guide-section-renderer {
   order: 10 !important;
   border-bottom: none !important;
   padding: 0 !important;
@@ -340,33 +391,42 @@ ytd-guide-divider-renderer {
 }
 
 /* Symmetrical Divider Pseudo-element */
-#sections.ytd-guide-renderer > ytd-guide-section-renderer::after {
+#sections.ytd-guide-renderer>ytd-guide-section-renderer::after {
   content: "";
   display: block;
   margin: 8px 20px 0 20px !important;
   height: 1px;
   background-color: var(--visiontube-border);
 }
-#sections.ytd-guide-renderer > ytd-guide-section-renderer:last-child::after {
+
+#sections.ytd-guide-renderer>ytd-guide-section-renderer:last-child::after {
   display: none !important;
 }
 
 /* Order 1: Home/Shorts */
-#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(1) { order: 1 !important; }
+#sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(1) {
+  order: 1 !important;
+}
+
 /* Order 2: Library/You */
-#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(3) { order: 2 !important; }
+#sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(3) {
+  order: 2 !important;
+}
+
 /* Order 3: Subscriptions */
-#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2) { order: 3 !important; }
+#sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(2) {
+  order: 3 !important;
+}
 
 /* Hide all section titles ("You >", etc) EXCEPT Subscriptions */
-#sections.ytd-guide-renderer > ytd-guide-section-renderer #guide-section-title,
+#sections.ytd-guide-renderer>ytd-guide-section-renderer #guide-section-title,
 ytd-guide-section-renderer #guide-section-title a[href^="/feed/you"],
 ytd-guide-section-renderer #guide-section-title:has(a[href^="/feed/you"]) {
   display: none !important;
 }
 
 /* Show Subscriptions Header */
-#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2) #guide-section-title {
+#sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(2) #guide-section-title {
   display: block !important;
   font-size: 13px !important;
   font-weight: 500 !important;
@@ -379,12 +439,12 @@ ytd-guide-section-renderer #guide-section-title:has(a[href^="/feed/you"]) {
 }
 
 /* Limit to 5 subscriptions */
-#sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(2) #items > ytd-guide-entry-renderer:nth-child(n+6) {
+#sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(2) #items>ytd-guide-entry-renderer:nth-child(n+6) {
   display: none !important;
 }
 
 /* Subscription Avatars */
-ytd-guide-entry-renderer yt-img-shadow, 
+ytd-guide-entry-renderer yt-img-shadow,
 ytd-guide-entry-renderer img,
 .yt-core-image--fill-parent-height {
   border-radius: 50% !important;
@@ -395,6 +455,7 @@ ytd-guide-entry-renderer yt-img-shadow {
   height: 24px !important;
   margin-right: 12px !important;
 }
+
 /* Ensure avatars display in sidebar */
 ytd-guide-entry-renderer yt-avatar-shape {
   display: block !important;
@@ -402,13 +463,13 @@ ytd-guide-entry-renderer yt-avatar-shape {
 
 /* ===================== BLUR BAR NUKE ===================== */
 
-ytd-rich-grid-renderer > #header,
-ytd-rich-grid-renderer > #header.ytd-rich-grid-renderer,
+ytd-rich-grid-renderer>#header,
+ytd-rich-grid-renderer>#header.ytd-rich-grid-renderer,
 #chips-wrapper,
 iron-selector#chips,
 yt-chip-cloud-renderer,
 ytd-feed-filter-chip-bar-renderer,
-ytd-rich-grid-renderer > #header > *,
+ytd-rich-grid-renderer>#header>*,
 ytd-rich-grid-renderer #header.ytd-rich-grid-renderer,
 #masthead-ad,
 ytd-statement-banner-renderer,
@@ -447,19 +508,30 @@ html body #frosted-glass {
   box-shadow: none !important;
 }
 
-/* ===================== MAIN CONTENT GRID (Homepage Only) ===================== */
-ytd-browse[page-subtype="home"] #contents.ytd-rich-grid-renderer {
+/* ===================== MAIN CONTENT GRID (Homepage & Subscriptions) ===================== */
+ytd-browse[page-subtype="home"] #contents.ytd-rich-grid-renderer,
+ytd-browse[page-subtype="subscriptions"] #contents.ytd-rich-grid-renderer {
   padding: 0 var(--visiontube-side-padding) !important;
   box-sizing: border-box !important;
   width: 100% !important;
   max-width: 100% !important;
   margin: 0 !important;
+  overflow: visible !important;
 }
 
-ytd-browse[page-subtype="home"] ytd-rich-grid-renderer {
+/* Carousel sits above any ad overlays */
+.visiontube-carousel-wrapper {
+  position: relative !important;
+  z-index: 50 !important;
+  background: var(--yt-spec-base-background) !important;
+}
+
+ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer {
   --ytd-rich-grid-items-per-row: 4 !important;
   margin-top: 0 !important;
   padding-top: 0 !important;
+  overflow: visible !important;
 }
 
 /* Side video hover */
@@ -468,28 +540,46 @@ ytd-browse[page-subtype="home"] ytd-rich-grid-renderer {
   background: var(--visiontube-card) !important;
   transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
+
 .visiontube-side-video:hover {
   transform: translateY(-2px) !important;
-  box-shadow: 0 6px 16px rgba(0,0,0,0.06) !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06) !important;
 }
 
-/* Row spacing - compact (Homepage Only) */
-ytd-browse[page-subtype="home"] ytd-rich-grid-row {
+/* Row spacing - compact (Homepage & Subscriptions) */
+ytd-browse[page-subtype="home"] ytd-rich-grid-row,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-row {
   margin-bottom: 24px !important;
+  overflow: visible !important;
+}
+
+/* Allow the inner #contents of each row to also show overflow */
+ytd-browse[page-subtype="home"] ytd-rich-grid-row > #contents,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-row > #contents {
+  overflow: visible !important;
 }
 
 ytd-rich-item-renderer {
   border-radius: 16px !important;
+  overflow: visible !important;
 }
 
-ytd-browse[page-subtype="home"] yt-lockup-view-model, 
-ytd-browse[page-subtype="home"] .yt-lockup-view-model-wiz {
+ytd-rich-item-renderer > #content,
+ytd-rich-grid-media,
+ytd-rich-grid-media > #dismissible {
+  overflow: visible !important;
+}
+
+ytd-browse[page-subtype="home"] yt-lockup-view-model,
+ytd-browse[page-subtype="home"] .yt-lockup-view-model-wiz,
+ytd-browse[page-subtype="subscriptions"] yt-lockup-view-model,
+ytd-browse[page-subtype="subscriptions"] .yt-lockup-view-model-wiz {
   width: 100% !important;
   max-width: 100% !important;
 }
 
 /* Thumbnails */
-ytd-thumbnail, 
+ytd-thumbnail,
 ytd-thumbnail img,
 yt-image,
 yt-image img {
@@ -508,7 +598,7 @@ ytd-thumbnail-overlay-time-status-renderer,
 }
 
 /* Video Metadata - Compact (Scoped only to Homepage/Grid) */
-ytd-rich-grid-renderer #video-title, 
+ytd-rich-grid-renderer #video-title,
 ytd-rich-grid-renderer .yt-core-attributed-string[role="heading"] {
   font-weight: 600 !important;
   font-size: 14px !important;
@@ -521,12 +611,37 @@ ytd-rich-grid-renderer .yt-core-attributed-string[role="heading"] {
   overflow: hidden !important;
 }
 
+/* Subscriptions Page Native Headings */
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer yt-formatted-string#title,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #title-container h2,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #title-text,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #title,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer ytd-button-renderer yt-formatted-string,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-section-renderer yt-formatted-string#title,
+ytd-browse[page-subtype="subscriptions"] #header yt-formatted-string,
+ytd-browse[page-subtype="subscriptions"] ytd-feed-filter-chip-bar-renderer yt-formatted-string {
+  font-family: 'Google Sans', sans-serif !important;
+  font-weight: 700 !important;
+  font-size: 22px !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.3px !important;
+  color: var(--visiontube-text-primary) !important;
+}
+
+
+/* Carousel Alignment Fix */
+.visiontube-carousel-wrapper {
+  margin: 0 calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
+  width: calc(100% - var(--ytd-rich-grid-item-margin, 16px)) !important;
+  box-sizing: border-box !important;
+}
+
 ytd-rich-grid-renderer yt-lockup-metadata-view-model,
 ytd-rich-grid-renderer .yt-lockup-metadata-view-model-wiz {
   margin-top: 8px !important;
 }
 
-ytd-rich-grid-renderer ytd-channel-name yt-formatted-string, 
+ytd-rich-grid-renderer ytd-channel-name yt-formatted-string,
 ytd-rich-grid-renderer ytd-video-meta-block span,
 ytd-rich-grid-renderer .yt-core-attributed-string--link-inherit-color,
 ytd-rich-grid-renderer .yt-core-attributed-string--white-space-pre-wrap {
@@ -558,14 +673,17 @@ body.ytpro-hide-recommended #secondary #related,
 body.ytpro-hide-recommended #secondary ytd-watch-next-secondary-results-renderer {
   display: none !important;
 }
+
 /* Center the video + info when sidebar is hidden */
 body.ytpro-hide-recommended ytd-watch-flexy #columns {
   max-width: 1100px !important;
   margin: 0 auto !important;
 }
+
 body.ytpro-hide-recommended ytd-watch-flexy #secondary {
   display: none !important;
 }
+
 body.ytpro-hide-recommended ytd-watch-flexy #primary {
   max-width: 100% !important;
   flex: 1 !important;
@@ -677,6 +795,7 @@ body.ytpro-hide-top-header #masthead-container,
 body.ytpro-hide-top-header ytd-masthead {
   display: none !important;
 }
+
 body.ytpro-hide-top-header #page-manager {
   margin-top: 0 !important;
 }
@@ -701,7 +820,7 @@ body.ytpro-hide-more-yt #guide-links-secondary,
 body.ytpro-hide-more-yt #footer,
 body.ytpro-hide-more-yt ytd-guide-renderer #footer,
 body.ytpro-hide-more-yt ytd-guide-section-renderer:has(#guide-links-primary),
-body.ytpro-hide-more-yt #sections.ytd-guide-renderer > ytd-guide-section-renderer:nth-child(n+4) {
+body.ytpro-hide-more-yt #sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(n+4) {
   display: none !important;
 }
 
@@ -732,11 +851,13 @@ body.ytpro-disable-annotations .ytp-cards-teaser {
 }
 
 /* ── 3-video grid ── */
-body.ytpro-grid-3 ytd-browse[page-subtype="home"] ytd-rich-grid-renderer {
+body.ytpro-grid-3 ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
+body.ytpro-grid-3 ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer {
   --ytd-rich-grid-items-per-row: 3 !important;
 }
 
 /* ── Carousel Disabled Padding ── */
-body:not(.ytpro-carousel-active) ytd-browse[page-subtype="home"] ytd-rich-grid-renderer {
+body:not(.ytpro-carousel-active) ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
+body:not(.ytpro-carousel-active) ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer {
   padding-top: 24px !important;
 }

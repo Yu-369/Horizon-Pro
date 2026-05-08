@@ -49,7 +49,8 @@ function applySettings(settings) {
   // Carousel
   const wrapper = document.querySelector('.visiontube-carousel-wrapper');
   if (!currentSettings.enableCarousel && wrapper) wrapper.remove();
-  if (currentSettings.enableCarousel && window.location.pathname === '/' && !document.querySelector('.visiontube-carousel-wrapper')) {
+  const isEligible = window.location.pathname === '/' || window.location.pathname === '/feed/subscriptions';
+  if (currentSettings.enableCarousel && isEligible && !document.querySelector('.visiontube-carousel-wrapper')) {
     buildCarousel();
   }
 }
@@ -100,6 +101,30 @@ function nukeBlurBar() {
   document.querySelectorAll(NUKE_SELECTOR).forEach(el => { el.style.cssText = NUKE_STYLE; });
 }
 nukeBlurBar();
+
+// ─── Fix: Prevent floating ad overlays from covering the carousel ───
+// Does NOT remove ads — just pushes their z-index behind the carousel
+const AD_OVERLAY_SELECTOR =
+  'ytd-brand-video-singleton-renderer, ytd-promoted-sparkles-web-renderer, ' +
+  'ytd-display-ad-renderer, ytd-in-feed-ad-layout-renderer, ' +
+  'ytd-ad-slot-renderer, ytd-primetime-promo-renderer';
+
+function fixCarouselAdOverlap() {
+  const carousel = document.querySelector('.visiontube-carousel-wrapper');
+  if (!carousel) return;
+  // Push any ad overlays behind the carousel
+  document.querySelectorAll(AD_OVERLAY_SELECTOR).forEach(ad => {
+    ad.style.position = 'relative';
+    ad.style.zIndex = '0';
+  });
+  // Also check parent sections that might contain floating ads
+  document.querySelectorAll('ytd-rich-section-renderer').forEach(section => {
+    if (section.querySelector(AD_OVERLAY_SELECTOR)) {
+      section.style.position = 'relative';
+      section.style.zIndex = '0';
+    }
+  });
+}
 
 // ─── Search Bar Placeholder + Hide "You >" ───
 function fixSearchAndGuide() {
@@ -187,11 +212,13 @@ const mainObserver = new MutationObserver(() => {
     observerDebounce = null;
     nukeBlurBar();
     fixSearchAndGuide();
+    fixCarouselAdOverlap();
     tagIrrelevantSearchResults();
     tagMixItems();
     tagPlayablesShelf();
     disableAutoplay();
-    if (currentSettings.enableCarousel && window.location.pathname === '/' && !document.querySelector('.visiontube-carousel-wrapper')) {
+    const isEligiblePage = window.location.pathname === '/' || window.location.pathname === '/feed/subscriptions';
+    if (currentSettings.enableCarousel && isEligiblePage && !document.querySelector('.visiontube-carousel-wrapper')) {
       buildCarousel();
     }
   }, 300);
@@ -224,32 +251,60 @@ document.addEventListener('yt-navigate-finish', () => {
   const btn = document.querySelector('.ytp-autonav-toggle-button, button[data-tooltip-target-id="ytp-autonav-toggle-button"], button[aria-label^="Autoplay"]');
   if (btn) delete btn.dataset.ytproAutoplayHandled;
 
+  // Clean up old carousel and unhide videos
   const existing = document.querySelector('.visiontube-carousel-wrapper');
   if (existing) existing.remove();
   document.querySelectorAll('.visiontube-hidden').forEach(v => {
     v.style.display = ''; v.classList.remove('visiontube-hidden');
   });
+  if (window.visiontubeSlideshowInterval) clearInterval(window.visiontubeSlideshowInterval);
+
   setTimeout(() => {
     nukeBlurBar();
     fixSearchAndGuide();
     applySettings(currentSettings);
-  }, 500);
+  }, 300);
+
+  // Robust polling for carousel rebuild on eligible pages
+  const isEligible = window.location.pathname === '/' || window.location.pathname === '/feed/subscriptions';
+  if (currentSettings.enableCarousel && isEligible) {
+    let attempts = 0;
+    const poller = setInterval(() => {
+      attempts++;
+      const isSubscriptions = window.location.pathname === '/feed/subscriptions';
+      const pageSubtype = isSubscriptions ? 'subscriptions' : 'home';
+      const browse = Array.from(document.querySelectorAll(`ytd-browse[page-subtype="${pageSubtype}"]`))
+                          .find(el => !el.hasAttribute('hidden') && getComputedStyle(el).display !== 'none');
+      
+      if (document.querySelector('.visiontube-carousel-wrapper')) { clearInterval(poller); return; }
+      
+      const hasVideos = browse ? browse.querySelectorAll('ytd-rich-item-renderer, yt-lockup-view-model').length >= 4 : false;
+      if (hasVideos) {
+        buildCarousel();
+        clearInterval(poller);
+      }
+      if (attempts >= 15) clearInterval(poller); // stop after ~7.5s
+    }, 500);
+  }
 });
 
 setInterval(() => {
   nukeBlurBar();
   fixSearchAndGuide();
+  fixCarouselAdOverlap();
   tagIrrelevantSearchResults();
   tagMixItems();
   tagPlayablesShelf();
   disableAutoplay();
 
-  if (currentSettings.enableCarousel && window.location.pathname === '/') {
+  const isEligiblePage = window.location.pathname === '/' || window.location.pathname === '/feed/subscriptions';
+  
+  if (currentSettings.enableCarousel && isEligiblePage) {
     if (!document.querySelector('.visiontube-carousel-wrapper')) buildCarousel();
-  } else if (!currentSettings.enableCarousel || window.location.pathname !== '/') {
+  } else if (!currentSettings.enableCarousel || !isEligiblePage) {
     const existing = document.querySelector('.visiontube-carousel-wrapper');
     if (existing && !currentSettings.enableCarousel) existing.remove();
-    if (window.location.pathname !== '/') {
+    if (!isEligiblePage) {
       const ex2 = document.querySelector('.visiontube-carousel-wrapper');
       if (ex2) ex2.remove();
       document.querySelectorAll('.visiontube-hidden').forEach(v => {
@@ -262,10 +317,17 @@ setInterval(() => {
 // ─── Carousel Builder ───
 function buildCarousel() {
   if (!currentSettings.enableCarousel) return;
-  const feed = document.querySelector('ytd-rich-grid-renderer');
-  if (!feed || document.querySelector('.visiontube-carousel-container')) return;
+  const isSubscriptions = window.location.pathname === '/feed/subscriptions';
+  const pageSubtype = isSubscriptions ? 'subscriptions' : 'home';
+  const browse = Array.from(document.querySelectorAll(`ytd-browse[page-subtype="${pageSubtype}"]`))
+                      .find(el => !el.hasAttribute('hidden') && getComputedStyle(el).display !== 'none');
+  if (!browse) return;
+  
+  const firstVideo = browse.querySelector('ytd-rich-item-renderer, yt-lockup-view-model');
+  const feed = firstVideo ? firstVideo.closest('ytd-rich-grid-renderer, ytd-section-list-renderer, #contents, #primary, ytd-two-column-browse-results-renderer') : null;
+  if (!feed || browse.querySelector('.visiontube-carousel-container')) return;
 
-  const allVideos = Array.from(document.querySelectorAll('ytd-rich-item-renderer, yt-lockup-view-model'))
+  const allVideos = Array.from(browse.querySelectorAll('ytd-rich-item-renderer, yt-lockup-view-model'))
     .filter(el => {
       if (el.closest('ytd-rich-section-renderer') || el.closest('.visiontube-carousel-container')) return false;
       if (el.querySelector('ytd-ad-slot-renderer, [aria-label*="Ad"], [aria-label*="Sponsored"], feed-ad-metadata-view-model, ad-badge-view-model, .yt-spec-badge-shape__badge')) return false;
@@ -312,7 +374,7 @@ function buildCarousel() {
     const img = `https://i.ytimg.com/vi/${videoId}/hq720.jpg`;
     const link = linkHref || '#';
     vid.style.display = 'none'; vid.classList.add('visiontube-hidden');
-    document.querySelectorAll(`a[href*="${videoId}"]`).forEach(a => {
+    browse.querySelectorAll(`a[href*="${videoId}"]`).forEach(a => {
       const parent = a.closest('ytd-rich-item-renderer, yt-lockup-view-model');
       if (parent && parent !== vid) { parent.style.display = 'none'; parent.classList.add('visiontube-hidden'); }
     });
@@ -352,14 +414,19 @@ function buildCarousel() {
           Play Video
         </div>
       </div>
-      <div style="flex:0 0 62%;position:relative;overflow:hidden;background:#111;border-radius:0 16px 16px 0;display:flex;align-items:center;justify-content:center;">
+      <div class="visiontube-slide-media" style="flex:0 0 62%;position:relative;overflow:hidden;background:#111;border-radius:0 16px 16px 0;display:flex;align-items:center;justify-content:center;">
         <img class="visiontube-fallback-img" src="${vid.img}" data-vid="${vid.videoId}" style="width:100%;aspect-ratio:16/9;object-fit:cover;display:block;"/>
       </div>
     </a>`;
   }).join('');
+  
+  const pageTitle = isSubscriptions ? 'Featured' : 'Home';
+  const bottomHeadingHTML = isSubscriptions ? '' : `<div style="margin:32px 0 24px 0;">
+      <h2 style="font-family:'Google Sans',sans-serif!important;font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;color:var(--visiontube-text-primary);margin:0;letter-spacing:-0.3px;padding:0;">For You</h2>
+    </div>`;
 
-  const carouselHTML = `<div class="visiontube-carousel-container" style="display:flex;flex-direction:column;width:100%;box-sizing:border-box;margin-bottom:24px;padding-top:24px;">
-    <h1 style="font-family:'Google Sans',sans-serif!important;font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;color:var(--visiontube-text-primary);margin:0 0 20px 12px;letter-spacing:-0.3px;padding:0;">Home</h1>
+  const carouselHTML = `<div class="visiontube-carousel-container" style="display:flex;flex-direction:column;width:100%;box-sizing:border-box;margin-bottom:0px;padding-top:24px;">
+    <h1 style="font-family:'Google Sans',sans-serif!important;font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;color:var(--visiontube-text-primary);margin:0 0 24px 0;letter-spacing:-0.3px;padding:0;">${pageTitle}</h1>
     <div style="display:flex;gap:16px;height:280px;width:100%;align-items:stretch;">
       <div style="flex:1;position:relative;overflow:hidden;min-width:0;border-radius:16px;">
         <div class="visiontube-carousel-track" style="display:flex;width:100%;height:100%;transition:transform 0.6s cubic-bezier(0.25,1,0.5,1);transform:translateX(0%);will-change:transform;">${slidesHTML}</div>
@@ -367,23 +434,21 @@ function buildCarousel() {
       </div>
       <div style="flex:0 0 260px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;">${sideHTML}</div>
     </div>
-    <div style="margin:32px 0 0 12px;">
-      <h2 style="font-family:'Google Sans',sans-serif!important;font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;color:var(--visiontube-text-primary);margin:0;letter-spacing:-0.3px;padding:0;">For You</h2>
-    </div>
+    ${bottomHeadingHTML}
   </div>`;
 
   const container = document.createElement('div');
   container.className = 'visiontube-carousel-wrapper';
-  container.style.width = '100%';
+  container.style.width = 'calc(100% - var(--ytd-rich-grid-item-margin, 16px))';
+  container.style.margin = '0 calc(var(--ytd-rich-grid-item-margin, 16px) / 2)';
   container.style.gridColumn = '1 / -1';
 
   const parser = new DOMParser();
   const parsed = parser.parseFromString(carouselHTML, 'text/html');
   while (parsed.body.firstChild) container.appendChild(document.adoptNode(parsed.body.firstChild));
 
-  const contents = feed.querySelector('#contents');
-  if (contents) contents.insertAdjacentElement('afterbegin', container);
-  else feed.prepend(container);
+  // Always prepend to guarantee it's above headers like "Latest" and filters
+  feed.prepend(container);
 
   // Thumbnail fallback
   container.querySelectorAll('img.visiontube-fallback-img').forEach(img => {
@@ -398,11 +463,16 @@ function buildCarousel() {
     if (img.complete && (img.naturalWidth === 0 || img.naturalWidth <= 120)) handleErr();
   });
 
+
+
   // Slideshow logic
-  let currentSlide = 0, isTransitioning = false;
+  let currentSlide = 0, isTransitioning = false, isHovered = false;
   const track = container.querySelector('.visiontube-carousel-track');
   const dots = container.querySelectorAll('.visiontube-dot');
   if (window.visiontubeSlideshowInterval) clearInterval(window.visiontubeSlideshowInterval);
+  
+  container.addEventListener('mouseenter', () => isHovered = true);
+  container.addEventListener('mouseleave', () => isHovered = false);
 
   function goToSlide(nextIdx) {
     if (isTransitioning) return;
@@ -421,6 +491,6 @@ function buildCarousel() {
 
   window.visiontubeSlideshowInterval = setInterval(() => {
     if (!document.contains(container)) { clearInterval(window.visiontubeSlideshowInterval); return; }
-    goToSlide(currentSlide + 1);
-  }, 5500);
+    if (!isHovered) goToSlide(currentSlide + 1);
+  }, 4500);
 }

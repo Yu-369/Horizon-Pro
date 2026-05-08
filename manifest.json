@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "YouTube Pro",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Experience YouTube like never before with a stunning cinematic redesign, sleek infinite carousels, and an ultra-modern aesthetic.",
   "browser_specific_settings": {
     "gecko": {
@@ -17,17 +17,22 @@
     "storage"
   ],
   "icons": {
-    "16": "Logo.png",
-    "48": "Logo.png",
-    "128": "Logo.png"
+    "16": "Logo-16.png",
+    "48": "Logo-48.png",
+    "128": "Logo-128.png"
   },
   "action": {
-    "default_icon": "Logo.png",
+    "default_icon": {
+      "16": "Logo-16.png",
+      "48": "Logo-48.png",
+      "128": "Logo-128.png"
+    },
     "default_popup": "popup.html",
     "default_title": "YouTube Pro Settings"
   },
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "background.js",
+    "scripts": ["background.js"]
   },
   "content_scripts": [
     {

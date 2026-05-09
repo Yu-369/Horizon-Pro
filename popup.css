@@ -1,4 +1,4 @@
-/* ── YouTube Pro Popup ── */
+
 *,
 *::before,
 *::after {
@@ -25,7 +25,7 @@ body {
   max-height: 560px;
 }
 
-/* ── Header ── */
+
 .ytpro-header {
   padding: 16px 18px 12px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -57,7 +57,7 @@ body {
   margin-top: 1px;
 }
 
-/* ── Sections Container ── */
+
 .ytpro-sections {
   flex: 1;
   overflow-y: auto;
@@ -79,7 +79,7 @@ body {
   border-radius: 4px;
 }
 
-/* ── Section ── */
+
 .ytpro-section {
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
@@ -136,7 +136,7 @@ body {
   transform: rotate(180deg);
 }
 
-/* ── Section Body ── */
+
 .ytpro-section-body {
   max-height: 0;
   overflow: hidden;
@@ -149,7 +149,7 @@ body {
   opacity: 1;
 }
 
-/* ── Toggle Row ── */
+
 .ytpro-toggle-row {
   display: flex;
   align-items: center;
@@ -185,7 +185,190 @@ body {
   margin-top: 1px;
 }
 
-/* ── Footer ── */
+
+.ytpro-slider-row {
+  padding: 8px 18px 12px 54px;
+}
+
+.ytpro-slider-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.ytpro-slider-badge {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.06);
+  color: #fff;
+  font-size: 13px;
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+
+.ytpro-slider-track-wrap {
+  position: relative;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.ytpro-slider-track-bg {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 12px;
+  border-radius: 6px;
+  transform: translateY(-50%);
+  background: linear-gradient(
+    to right,
+    #ff0000 0%,
+    #ff0000 calc(3px + (100% - 6px) * var(--slider-ratio, 0.33)),
+    #4a1515 calc(3px + (100% - 6px) * var(--slider-ratio, 0.33)),
+    #4a1515 100%
+  );
+  pointer-events: none;
+  z-index: 0;
+}
+
+.ytpro-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  margin: 0;
+}
+
+.ytpro-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 6px;
+  height: 36px;
+  border-radius: 4px;
+  background: #ff0000;
+  cursor: grab;
+  transition: transform 0.15s;
+}
+
+.ytpro-slider::-webkit-slider-thumb:hover {
+  transform: scaleY(1.1);
+}
+
+.ytpro-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+}
+
+.ytpro-slider::-moz-range-thumb {
+  width: 6px;
+  height: 36px;
+  border-radius: 4px;
+  background: #ff0000;
+  border: none;
+  cursor: grab;
+}
+
+.ytpro-slider::-moz-range-track {
+  background: transparent;
+}
+
+.ytpro-slider::-moz-range-progress {
+  background: transparent;
+}
+
+/* ── Ticks as internal dots ── */
+.ytpro-slider-ticks {
+  position: absolute;
+  top: 50%;
+  left: 3px;
+  right: 3px;
+  transform: translateY(-50%);
+  display: flex;
+  justify-content: space-between;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.ytpro-slider-tick {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(255, 0, 0, 0.4);
+  font-size: 0;
+  transition: background 0.15s;
+}
+
+.ytpro-slider-tick.active {
+  background: #6a0000;
+}
+
+
+.ytpro-select-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 18px 8px 54px;
+  gap: 12px;
+}
+
+.ytpro-select-wrap {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.ytpro-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: #d4d4d8;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 5px 28px 5px 10px;
+  font-family: inherit;
+  font-size: 11.5px;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s, background 0.15s;
+  min-width: 110px;
+}
+
+.ytpro-select:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.ytpro-select:focus {
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+.ytpro-select option {
+  background: #1a1b1e;
+  color: #d4d4d8;
+}
+
+.ytpro-select-chevron {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #666;
+  pointer-events: none;
+}
+
+
 .ytpro-footer {
   padding: 10px 18px;
   border-top: 1px solid rgba(255, 255, 255, 0.04);

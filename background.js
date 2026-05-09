@@ -1,4 +1,4 @@
-// background.js — YouTube Pro Service Worker
+// background.js — Horizon Pro Service Worker
 
 // Relay storage changes to all YouTube tabs
 chrome.storage.onChanged.addListener((changes, area) => {

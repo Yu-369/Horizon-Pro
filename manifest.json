@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
-  "name": "YouTube Pro",
-  "version": "1.2.0",
+  "name": "Horizon for YouTube™",
+  "version": "1.3.0",
   "description": "Experience YouTube like never before with a stunning cinematic redesign, sleek infinite carousels, and an ultra-modern aesthetic.",
   "browser_specific_settings": {
     "gecko": {
@@ -28,11 +28,10 @@
       "128": "Logo-128.png"
     },
     "default_popup": "popup.html",
-    "default_title": "YouTube Pro Settings"
+    "default_title": "Horizon Pro Settings"
   },
   "background": {
-    "service_worker": "background.js",
-    "scripts": ["background.js"]
+    "service_worker": "background.js"
   },
   "content_scripts": [
     {
@@ -46,6 +45,16 @@
         "content.js"
       ],
       "run_at": "document_end"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "inject-quality.js"
+      ],
+      "matches": [
+        "*://www.youtube.com/*"
+      ]
     }
   ]
 }

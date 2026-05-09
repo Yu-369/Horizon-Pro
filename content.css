@@ -1,8 +1,8 @@
-/* content.css — YouTube Pro */
 
-/* ===================== THEME VARIABLES ===================== */
 
-/* LIGHT THEME */
+
+
+
 html:not([dark]) {
   --yt-spec-base-background: #FAFAFC !important;
   --yt-spec-raised-background: #ffffff !important;
@@ -28,7 +28,7 @@ html:not([dark]) {
   --visiontube-hover: rgba(0, 0, 0, 0.03);
 }
 
-/* DARK THEME */
+
 html[dark],
 html[dark="true"] {
   --yt-spec-base-background: #0d0e10 !important;
@@ -66,10 +66,10 @@ ytd-app {
 body,
 html,
 * {
-  font-family: "SF Pro Display", "SF Pro Text", "SF Pro", "SF Compact", "San Francisco", -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
+  font-family: "Google Sans", "SF Pro Display", "SF Pro Text", "SF Pro", "SF Compact", "San Francisco", -apple-system, BlinkMacSystemFont, "Inter", "Segoe UI", Roboto, Helvetica, Arial, sans-serif !important;
 }
 
-/* Ensure important text overrides for SF Pro */
+
 ytd-app,
 #page-manager,
 ytd-watch-flexy,
@@ -85,7 +85,7 @@ ytd-watch-flexy {
   color: var(--yt-spec-text-primary) !important;
 }
 
-/* ===================== MASTHEAD ===================== */
+
 #masthead-container,
 ytd-masthead,
 ytd-masthead #background {
@@ -96,7 +96,7 @@ ytd-masthead #background {
   height: 56px !important;
 }
 
-/* Force perfect centering of the search bar */
+
 ytd-masthead #container.ytd-masthead {
   display: flex !important;
   justify-content: space-between !important;
@@ -118,7 +118,7 @@ ytd-masthead #center.ytd-masthead {
   justify-content: center !important;
 }
 
-/* Symmetrical masthead divider with whitespace on edges */
+
 #masthead-container::after {
   content: "" !important;
   position: absolute !important;
@@ -134,7 +134,7 @@ ytd-masthead #center.ytd-masthead {
   display: block !important;
 }
 
-/* Keep YouTube logo original */
+
 ytd-topbar-logo-renderer yt-icon,
 ytd-topbar-logo-renderer yt-icon svg,
 ytd-logo yt-icon,
@@ -146,41 +146,75 @@ ytd-logo yt-icon svg,
   transform: none !important;
 }
 
-/* Thinner top bar icons (bell, create, etc.) */
+
 ytd-masthead yt-icon svg {
   transform: scale(0.75) !important;
   color: var(--visiontube-text-secondary) !important;
   opacity: 0.85 !important;
 }
 
-/* Hide the EXTERNAL search icon circle button (separate from the pill) */
+
 #search-icon-legacy,
 button#search-icon-legacy {
   display: none !important;
 }
 
-/* Also hide the mic button next to search */
+
 #voice-search-button {
   display: none !important;
 }
 
-/* ===================== SEARCH BAR ===================== */
-/* UNIFIED PILL: Container holds background & border radius */
+
+
+yt-searchbox {
+  display: flex !important;
+  align-items: center !important;
+}
+
+ytd-searchbox #search-container {
+  height: 100% !important;
+  width: 100% !important;
+  display: flex !important;
+  align-items: center !important;
+}
+
 yt-searchbox,
-yt-searchbox .ytSearchboxComponentInputContainer,
-yt-searchbox form.ytSearchboxComponentSearchForm {
+ytd-searchbox {
   background: var(--visiontube-surface) !important;
   border-radius: 40px !important;
+  border: 1px solid var(--visiontube-border) !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04) !important;
+  height: 44px !important;
+  width: 100% !important;
+  max-width: 640px !important;
+  display: flex !important;
+  align-items: center !important;
+  margin: 0 auto !important;
+  padding: 0 !important;
+  outline: none !important;
+  transition: border-color 0.2s, background 0.2s !important;
+  box-sizing: border-box !important;
+}
+
+yt-searchbox form.ytSearchboxComponentSearchForm,
+yt-searchbox .ytSearchboxComponentInputContainer,
+ytd-searchbox #container,
+ytd-searchbox #search-form {
+  background: transparent !important;
   border: none !important;
   box-shadow: none !important;
-  height: 44px !important;
-  max-width: 640px !important;
-  width: 100% !important;
+  height: 100% !important;
+  flex: 1 !important;
   display: flex !important;
   align-items: center !important;
   margin: 0 !important;
   padding: 0 !important;
-  outline: none !important;
+}
+
+yt-searchbox[has-focus],
+ytd-searchbox[has-focus] {
+  border-color: rgba(255, 255, 255, 0.15) !important;
+  background: var(--visiontube-active) !important;
 }
 
 yt-searchbox .ytSearchboxComponentInputBox {
@@ -194,7 +228,7 @@ yt-searchbox .ytSearchboxComponentInputBox {
   margin: 0 !important;
 }
 
-/* Input text — left-aligned with proper padding */
+
 yt-searchbox input.ytSearchboxComponentInput,
 yt-searchbox input#search {
   color: var(--visiontube-text-primary) !important;
@@ -208,7 +242,7 @@ yt-searchbox input#search {
   font-size: 15px !important;
 }
 
-/* NUKE every possible search icon inside the search bar (focused & unfocused) */
+
 yt-searchbox .ytSearchboxComponentInputContainer yt-icon:not(.ytSearchboxComponentSearchButton yt-icon):not(.ytSearchboxComponentClearButton yt-icon),
 yt-searchbox .ytSearchboxComponentInputBoxSearchIcon,
 yt-searchbox .ytSearchboxComponentInnerSearchIcon,
@@ -231,8 +265,9 @@ yt-searchbox input::placeholder {
   font-size: 15px !important;
 }
 
-/* Search button — unified inside the pill, no separate circle */
-yt-searchbox button.ytSearchboxComponentSearchButton {
+
+yt-searchbox button.ytSearchboxComponentSearchButton,
+ytd-searchbox #search-icon-legacy {
   background: transparent !important;
   border: none !important;
   box-shadow: none !important;
@@ -249,27 +284,21 @@ yt-searchbox button.ytSearchboxComponentSearchButton yt-icon {
   height: 20px !important;
 }
 
-/* Kill blue flash on search button */
+
 yt-searchbox .ytSearchboxComponentSearchButtonVisual,
 yt-searchbox .ytSearchboxComponentSearchButtonBackground {
   display: none !important;
 }
 
-/* Focus: white bg + subtle inset border on the entire container */
-yt-searchbox[has-focus] .ytSearchboxComponentInputContainer,
-yt-searchbox[has-focus] form.ytSearchboxComponentSearchForm {
-  background: var(--visiontube-card) !important;
-  box-shadow: inset 0 0 0 1px var(--visiontube-border) !important;
-  border: none !important;
-}
 
-/* Hide voice/mic */
+
+
 yt-searchbox .ytSearchboxComponentVoiceSearchButton,
 yt-button-shape#voice-search-button {
   display: none !important;
 }
 
-/* Hide 'Create' button */
+
 yt-button-shape a[href="/upload"],
 #buttons ytd-topbar-menu-button-renderer:nth-child(1),
 ytd-masthead button[aria-label="Create"],
@@ -277,7 +306,7 @@ ytd-masthead [title="Create"] {
   display: none !important;
 }
 
-/* ===================== SIDEBAR ===================== */
+
 #guide-wrapper,
 app-drawer#guide,
 app-drawer,
@@ -290,13 +319,13 @@ app-drawer,
   width: 260px !important;
 }
 
-/* Smooth page manager content shift */
+
 #page-manager,
 ytd-page-manager.ytd-app {
   transition: margin-left 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
 
-/* Force page manager to respect the 260px sidebar (instead of native 240px) */
+
 ytd-app[guide-persistent-and-visible] #page-manager,
 ytd-app[guide-persistent-and-visible] ytd-page-manager.ytd-app {
   margin-left: 260px !important;
@@ -307,7 +336,7 @@ ytd-app[guide-persistent-and-visible] ytd-page-manager.ytd-app {
   position: relative !important;
 }
 
-/* Symmetrical sidebar divider with whitespace on top/bottom */
+
 #guide-inner-content::after {
   content: "" !important;
   position: absolute !important;
@@ -363,7 +392,7 @@ ytd-guide-entry-renderer yt-formatted-string {
   color: var(--visiontube-text-secondary) !important;
 }
 
-/* Thinner sidebar icons */
+
 ytd-guide-entry-renderer yt-icon,
 ytd-mini-guide-entry-renderer yt-icon {
   width: 20px !important;
@@ -372,13 +401,13 @@ ytd-mini-guide-entry-renderer yt-icon {
   opacity: 0.85 !important;
 }
 
-/* Sidebar Sections Reorder & Dividers */
+
 #sections.ytd-guide-renderer {
   display: flex !important;
   flex-direction: column !important;
 }
 
-/* Hide the native divider to use our symmetrical pseudo-element */
+
 ytd-guide-divider-renderer {
   display: none !important;
 }
@@ -390,7 +419,7 @@ ytd-guide-divider-renderer {
   margin-bottom: 8px !important;
 }
 
-/* Symmetrical Divider Pseudo-element */
+
 #sections.ytd-guide-renderer>ytd-guide-section-renderer::after {
   content: "";
   display: block;
@@ -403,29 +432,29 @@ ytd-guide-divider-renderer {
   display: none !important;
 }
 
-/* Order 1: Home/Shorts */
+
 #sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(1) {
   order: 1 !important;
 }
 
-/* Order 2: Library/You */
+
 #sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(3) {
   order: 2 !important;
 }
 
-/* Order 3: Subscriptions */
+
 #sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(2) {
   order: 3 !important;
 }
 
-/* Hide all section titles ("You >", etc) EXCEPT Subscriptions */
+
 #sections.ytd-guide-renderer>ytd-guide-section-renderer #guide-section-title,
 ytd-guide-section-renderer #guide-section-title a[href^="/feed/you"],
 ytd-guide-section-renderer #guide-section-title:has(a[href^="/feed/you"]) {
   display: none !important;
 }
 
-/* Show Subscriptions Header */
+
 #sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(2) #guide-section-title {
   display: block !important;
   font-size: 13px !important;
@@ -438,12 +467,12 @@ ytd-guide-section-renderer #guide-section-title:has(a[href^="/feed/you"]) {
   padding-left: 20px !important;
 }
 
-/* Limit to 5 subscriptions */
+
 #sections.ytd-guide-renderer>ytd-guide-section-renderer:nth-child(2) #items>ytd-guide-entry-renderer:nth-child(n+6) {
   display: none !important;
 }
 
-/* Subscription Avatars */
+
 ytd-guide-entry-renderer yt-img-shadow,
 ytd-guide-entry-renderer img,
 .yt-core-image--fill-parent-height {
@@ -456,21 +485,21 @@ ytd-guide-entry-renderer yt-img-shadow {
   margin-right: 12px !important;
 }
 
-/* Ensure avatars display in sidebar */
+
 ytd-guide-entry-renderer yt-avatar-shape {
   display: block !important;
 }
 
-/* ===================== BLUR BAR NUKE ===================== */
 
-ytd-rich-grid-renderer>#header,
-ytd-rich-grid-renderer>#header.ytd-rich-grid-renderer,
-#chips-wrapper,
-iron-selector#chips,
-yt-chip-cloud-renderer,
-ytd-feed-filter-chip-bar-renderer,
-ytd-rich-grid-renderer>#header>*,
-ytd-rich-grid-renderer #header.ytd-rich-grid-renderer,
+
+ytd-browse[page-subtype="home"] ytd-rich-grid-renderer>#header,
+ytd-browse[page-subtype="home"] ytd-rich-grid-renderer>#header.ytd-rich-grid-renderer,
+ytd-browse[page-subtype="home"] #chips-wrapper,
+ytd-browse[page-subtype="home"] iron-selector#chips,
+ytd-browse[page-subtype="home"] yt-chip-cloud-renderer,
+ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer,
+ytd-browse[page-subtype="home"] ytd-rich-grid-renderer>#header>*,
+ytd-browse[page-subtype="home"] ytd-rich-grid-renderer #header.ytd-rich-grid-renderer,
 #masthead-ad,
 ytd-statement-banner-renderer,
 ytd-banner-promo-renderer,
@@ -499,7 +528,7 @@ html body #frosted-glass {
   font-size: 0 !important;
 }
 
-/* Kill ALL ambient glows */
+
 #masthead-container,
 #background-glow,
 .ambient-glow,
@@ -508,7 +537,7 @@ html body #frosted-glass {
   box-shadow: none !important;
 }
 
-/* ===================== MAIN CONTENT GRID (Homepage & Subscriptions) ===================== */
+
 ytd-browse[page-subtype="home"] #contents.ytd-rich-grid-renderer,
 ytd-browse[page-subtype="subscriptions"] #contents.ytd-rich-grid-renderer {
   padding: 0 var(--visiontube-side-padding) !important;
@@ -519,7 +548,7 @@ ytd-browse[page-subtype="subscriptions"] #contents.ytd-rich-grid-renderer {
   overflow: visible !important;
 }
 
-/* Carousel sits above any ad overlays */
+
 .visiontube-carousel-wrapper {
   position: relative !important;
   z-index: 50 !important;
@@ -534,7 +563,7 @@ ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer {
   overflow: visible !important;
 }
 
-/* Side video hover */
+
 .visiontube-side-video {
   border: 1px solid var(--visiontube-border) !important;
   background: var(--visiontube-card) !important;
@@ -546,14 +575,14 @@ ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer {
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06) !important;
 }
 
-/* Row spacing - compact (Homepage & Subscriptions) */
+
 ytd-browse[page-subtype="home"] ytd-rich-grid-row,
 ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-row {
   margin-bottom: 24px !important;
   overflow: visible !important;
 }
 
-/* Allow the inner #contents of each row to also show overflow */
+
 ytd-browse[page-subtype="home"] ytd-rich-grid-row > #contents,
 ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-row > #contents {
   overflow: visible !important;
@@ -578,7 +607,7 @@ ytd-browse[page-subtype="subscriptions"] .yt-lockup-view-model-wiz {
   max-width: 100% !important;
 }
 
-/* Thumbnails */
+
 ytd-thumbnail,
 ytd-thumbnail img,
 yt-image,
@@ -586,7 +615,7 @@ yt-image img {
   border-radius: 12px !important;
 }
 
-/* Time Status Badge */
+
 ytd-thumbnail-overlay-time-status-renderer,
 .badge-shape-wiz--thumbnail-default {
   border-radius: 4px !important;
@@ -597,7 +626,7 @@ ytd-thumbnail-overlay-time-status-renderer,
   font-size: 11px !important;
 }
 
-/* Video Metadata - Compact (Scoped only to Homepage/Grid) */
+
 ytd-rich-grid-renderer #video-title,
 ytd-rich-grid-renderer .yt-core-attributed-string[role="heading"] {
   font-weight: 600 !important;
@@ -607,19 +636,15 @@ ytd-rich-grid-renderer .yt-core-attributed-string[role="heading"] {
   margin-top: 8px !important;
   display: -webkit-box !important;
   -webkit-line-clamp: 2 !important;
+  line-clamp: 2 !important;
   -webkit-box-orient: vertical !important;
   overflow: hidden !important;
 }
 
-/* Subscriptions Page Native Headings */
-ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer yt-formatted-string#title,
-ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #title-container h2,
-ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #title-text,
-ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #title,
-ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer ytd-button-renderer yt-formatted-string,
-ytd-browse[page-subtype="subscriptions"] ytd-rich-section-renderer yt-formatted-string#title,
-ytd-browse[page-subtype="subscriptions"] #header yt-formatted-string,
-ytd-browse[page-subtype="subscriptions"] ytd-feed-filter-chip-bar-renderer yt-formatted-string {
+
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #title-container yt-formatted-string#title,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #title-container #title-text,
+ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer #title-container #title {
   font-family: 'Google Sans', sans-serif !important;
   font-weight: 700 !important;
   font-size: 22px !important;
@@ -628,8 +653,14 @@ ytd-browse[page-subtype="subscriptions"] ytd-feed-filter-chip-bar-renderer yt-fo
   color: var(--visiontube-text-primary) !important;
 }
 
+.visiontube-carousel-container h1,
+.visiontube-carousel-container h2,
+.visiontube-slide div {
+  font-family: 'Google Sans', sans-serif;
+}
 
-/* Carousel Alignment Fix */
+
+
 .visiontube-carousel-wrapper {
   margin: 0 calc(var(--ytd-rich-grid-item-margin, 16px) / 2) !important;
   width: calc(100% - var(--ytd-rich-grid-item-margin, 16px)) !important;
@@ -650,31 +681,35 @@ ytd-rich-grid-renderer .yt-core-attributed-string--white-space-pre-wrap {
   font-weight: 500 !important;
 }
 
-/* Hide Avatar in Grid */
+
 ytd-rich-grid-media #avatar-link,
 yt-lockup-metadata-view-model-wiz yt-avatar-shape,
 yt-rich-grid-row yt-avatar-shape {
   display: none !important;
 }
 
-/* Remove borders from cards */
+
 ytd-rich-item-renderer {
   border: none !important;
   background: transparent !important;
+  transition: width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), margin 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+ytd-rich-grid-row > #contents {
+  display: flex !important;
+  flex-wrap: wrap !important;
 }
 
 
-/* ================================================================
-   TOGGLEABLE FEATURES — scoped behind body.ytpro-* classes
-   ================================================================ */
 
-/* ── Hide Recommended (Related Videos sidebar on watch page) ── */
+
+
 body.ytpro-hide-recommended #secondary #related,
 body.ytpro-hide-recommended #secondary ytd-watch-next-secondary-results-renderer {
   display: none !important;
 }
 
-/* Center the video + info when sidebar is hidden */
+
 body.ytpro-hide-recommended ytd-watch-flexy #columns {
   max-width: 1100px !important;
   margin: 0 auto !important;
@@ -689,19 +724,19 @@ body.ytpro-hide-recommended ytd-watch-flexy #primary {
   flex: 1 !important;
 }
 
-/* ── Hide Live Chat ── */
+
 body.ytpro-hide-livechat #chat-container,
 body.ytpro-hide-livechat #chat,
 body.ytpro-hide-livechat ytd-live-chat-frame {
   display: none !important;
 }
 
-/* ── Hide Playlist (sidebar playlist panel) ── */
+
 body.ytpro-hide-playlist #secondary ytd-playlist-panel-renderer {
   display: none !important;
 }
 
-/* ── Hide YouTube Shorts ── */
+
 body.ytpro-hide-shorts ytd-reel-shelf-renderer,
 body.ytpro-hide-shorts ytd-rich-section-renderer:has(ytd-rich-shelf-renderer[is-shorts]),
 body.ytpro-hide-shorts ytd-rich-section-renderer:has([is-shorts]),
@@ -713,14 +748,14 @@ body.ytpro-hide-shorts ytd-grid-video-renderer:has(a[href*="/shorts/"]) {
   display: none !important;
 }
 
-/* ── Hide End Screen Videowall ── */
+
 body.ytpro-hide-endscreen .ytp-endscreen-content,
 body.ytpro-hide-endscreen .html5-endscreen,
 body.ytpro-hide-endscreen .ytp-ce-element {
   display: none !important;
 }
 
-/* ── Hide End Screen Cards ── */
+
 body.ytpro-hide-endcards .ytp-cards-teaser,
 body.ytpro-hide-endcards .ytp-cards-button,
 body.ytpro-hide-endcards .ytp-ce-element,
@@ -730,13 +765,13 @@ body.ytpro-hide-endcards .ytp-card-content {
   display: none !important;
 }
 
-/* ── Hide Comments ── */
+
 body.ytpro-hide-comments ytd-comments#comments,
 body.ytpro-hide-comments ytd-item-section-renderer#sections {
   display: none !important;
 }
 
-/* ── Hide Mix / Radio Playlists ── */
+
 body.ytpro-hide-mix ytd-radio-renderer,
 body.ytpro-hide-mix ytd-compact-radio-renderer,
 body.ytpro-hide-mix ytd-rich-item-renderer:has(a[href*="&start_radio=1"]),
@@ -751,7 +786,7 @@ body.ytpro-hide-mix .ytpro-mix-item {
   display: none !important;
 }
 
-/* ── Hide Merch, Tickets, Offers ── */
+
 body.ytpro-hide-merch ytd-merch-shelf-renderer,
 body.ytpro-hide-merch ytd-offer-module-renderer,
 body.ytpro-hide-merch ytd-ticket-shelf-renderer,
@@ -767,7 +802,7 @@ body.ytpro-hide-merch ytd-engagement-panel-section-list-renderer[target-id="enga
   display: none !important;
 }
 
-/* ── Hide Video Buttons Bar (like, dislike, share, etc.) ── */
+
 body.ytpro-hide-video-buttons #top-level-buttons-computed,
 body.ytpro-hide-video-buttons ytd-menu-renderer.ytd-video-primary-info-renderer,
 body.ytpro-hide-video-buttons #actions.ytd-watch-metadata,
@@ -775,14 +810,14 @@ body.ytpro-hide-video-buttons ytd-watch-metadata #actions {
   display: none !important;
 }
 
-/* ── Hide Channel Info (profile + subscribe) ── */
+
 body.ytpro-hide-channel #owner,
 body.ytpro-hide-channel ytd-video-owner-renderer,
 body.ytpro-hide-channel #upload-info {
   display: none !important;
 }
 
-/* ── Hide Video Description ── */
+
 body.ytpro-hide-description #description.ytd-watch-metadata,
 body.ytpro-hide-description ytd-text-inline-expander,
 body.ytpro-hide-description ytd-structured-description-content-renderer,
@@ -790,7 +825,7 @@ body.ytpro-hide-description #description-inline-expander {
   display: none !important;
 }
 
-/* ── Hide Top Header (entire masthead) ── */
+
 body.ytpro-hide-top-header #masthead-container,
 body.ytpro-hide-top-header ytd-masthead {
   display: none !important;
@@ -800,13 +835,13 @@ body.ytpro-hide-top-header #page-manager {
   margin-top: 0 !important;
 }
 
-/* ── Hide Notification Bell ── */
+
 body.ytpro-hide-notif-bell ytd-notification-topbar-button-renderer,
 body.ytpro-hide-notif-bell button[aria-label="Notifications"] {
   display: none !important;
 }
 
-/* ── Hide Explore & Trending ── */
+
 body.ytpro-hide-explore ytd-guide-entry-renderer a[title="Trending"],
 body.ytpro-hide-explore ytd-guide-entry-renderer a[href="/feed/trending"],
 body.ytpro-hide-explore ytd-guide-entry-renderer a[href="/feed/explore"],
@@ -814,7 +849,7 @@ body.ytpro-hide-explore ytd-guide-entry-renderer a[title="Explore"] {
   display: none !important;
 }
 
-/* ── Hide "More from YouTube" ── */
+
 body.ytpro-hide-more-yt #guide-links-primary,
 body.ytpro-hide-more-yt #guide-links-secondary,
 body.ytpro-hide-more-yt #footer,
@@ -824,7 +859,7 @@ body.ytpro-hide-more-yt #sections.ytd-guide-renderer>ytd-guide-section-renderer:
   display: none !important;
 }
 
-/* ── Hide Playables ── */
+
 body.ytpro-hide-playables ytd-guide-entry-renderer a[title="Playables"],
 body.ytpro-hide-playables ytd-guide-entry-renderer:has(a[href*="/playables"]),
 body.ytpro-hide-playables ytd-mini-guide-entry-renderer:has(a[href*="/playables"]),
@@ -832,12 +867,17 @@ body.ytpro-hide-playables .ytpro-playables-shelf {
   display: none !important;
 }
 
-/* ── Hide Irrelevant Search Results (JS Tagged) ── */
+
 body.ytpro-hide-irrelevant-search .ytpro-irrelevant-search {
   display: none !important;
 }
 
-/* ── Disable Annotations (CSS portion) ── */
+
+body.ytpro-hide-section-shelves ytd-rich-section-renderer:not(:has(ytd-rich-shelf-renderer[is-shorts])):not(:has([is-shorts])):not(:has(ytd-ad-slot-renderer)):not(:has(.visiontube-carousel-container)):not(:has(#title-container)):not(:has(#title)):not(:has(#title-text)):not(:has(yt-formatted-string#title)) {
+  display: none !important;
+}
+
+
 body.ytpro-disable-annotations .annotation,
 body.ytpro-disable-annotations .ytp-cards-teaser-box,
 body.ytpro-disable-annotations .iv-branding,
@@ -850,13 +890,74 @@ body.ytpro-disable-annotations .ytp-cards-teaser {
   display: none !important;
 }
 
-/* ── 3-video grid ── */
+
+body.ytpro-default-font,
+body.ytpro-default-font html,
+body.ytpro-default-font * {
+  font-family: "Roboto", "Arial", sans-serif !important;
+}
+
+body.ytpro-default-font,
+body.ytpro-default-font * {
+  font-family: "Roboto", "Arial", sans-serif !important;
+}
+
+
 body.ytpro-grid-3 ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
 body.ytpro-grid-3 ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer {
   --ytd-rich-grid-items-per-row: 3 !important;
 }
 
-/* ── Carousel Disabled Padding ── */
+body.ytpro-grid-5 ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
+body.ytpro-grid-5 ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 5 !important;
+}
+
+body.ytpro-grid-6 ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
+body.ytpro-grid-6 ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer {
+  --ytd-rich-grid-items-per-row: 6 !important;
+}
+
+
+body.ytpro-grid-5 ytd-rich-grid-renderer #video-title,
+body.ytpro-grid-5 ytd-rich-grid-renderer .yt-core-attributed-string[role="heading"] {
+  font-size: 12.5px !important;
+  line-height: 1.3 !important;
+  margin-top: 6px !important;
+}
+
+body.ytpro-grid-5 ytd-rich-grid-renderer ytd-channel-name yt-formatted-string,
+body.ytpro-grid-5 ytd-rich-grid-renderer ytd-video-meta-block span,
+body.ytpro-grid-5 ytd-rich-grid-renderer .yt-core-attributed-string--link-inherit-color,
+body.ytpro-grid-5 ytd-rich-grid-renderer .yt-core-attributed-string--white-space-pre-wrap {
+  font-size: 11px !important;
+}
+
+body.ytpro-grid-5 ytd-rich-grid-renderer yt-lockup-metadata-view-model,
+body.ytpro-grid-5 ytd-rich-grid-renderer .yt-lockup-metadata-view-model-wiz {
+  margin-top: 6px !important;
+}
+
+body.ytpro-grid-6 ytd-rich-grid-renderer #video-title,
+body.ytpro-grid-6 ytd-rich-grid-renderer .yt-core-attributed-string[role="heading"] {
+  font-size: 11.5px !important;
+  line-height: 1.25 !important;
+  margin-top: 5px !important;
+}
+
+body.ytpro-grid-6 ytd-rich-grid-renderer ytd-channel-name yt-formatted-string,
+body.ytpro-grid-6 ytd-rich-grid-renderer ytd-video-meta-block span,
+body.ytpro-grid-6 ytd-rich-grid-renderer .yt-core-attributed-string--link-inherit-color,
+body.ytpro-grid-6 ytd-rich-grid-renderer .yt-core-attributed-string--white-space-pre-wrap {
+  font-size: 10.5px !important;
+}
+
+body.ytpro-grid-6 ytd-rich-grid-renderer yt-lockup-metadata-view-model,
+body.ytpro-grid-6 ytd-rich-grid-renderer .yt-lockup-metadata-view-model-wiz {
+  margin-top: 5px !important;
+}
+
+
 body:not(.ytpro-carousel-active) ytd-browse[page-subtype="home"] ytd-rich-grid-renderer,
 body:not(.ytpro-carousel-active) ytd-browse[page-subtype="subscriptions"] ytd-rich-grid-renderer {
   padding-top: 24px !important;

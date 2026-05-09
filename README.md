@@ -1,20 +1,21 @@
-# Horizon for YouTube™
+# Horizon Pro
 
-Experience YouTube with a stunning cinematic redesign. Horizon for YouTube™ transforms the standard interface into a premium, focused, and ultra-modern experience by stripping away algorithmic noise and clutter.
+Experience YouTube with a stunning cinematic redesign. Horizon Pro transforms the standard interface into a premium, focused, and ultra-modern experience by stripping away algorithmic noise and clutter.
 
 ![Hero Banner](https://github.com/user-attachments/assets/7d20b5eb-f032-43f6-88f4-d2d2fa93e266)
 
-## 🆕 Latest Release (v1.2.0)
+## 🆕 Latest Release (v1.3.0) — The "Cinematic Precision" Update
 
-This major update brings the premium Horizon for YouTube™ experience to the **Subscriptions page**, and overhauls the **Sidebar animations** for a truly cinematic feel.
+This update focuses on visual perfection and user control. It introduces a **Grid Slider**, a fully **Unified Search Bar** redesign for all YouTube layouts, and **Universal Typography** that brings Google Sans to every corner of the platform.
 
 ### 🛠 Full Feature List
-- **Horizon for YouTube™ Core**
+- **Horizon Pro Core**
   - **Dynamic Featured Carousel**: Cinematic hero section now available on both **Home** and **Subscriptions** feeds.
-  - **Premium Typography**: Native YouTube headings ("Latest", "All subscriptions", etc.) now utilize Google Sans Bold (22px) for a unified, modern aesthetic.
+  - **Premium Grid Control**: Smooth 3-6 column density slider with a custom-built, high-end UI (pill thumb, internal dot ticks, and dynamic track gradient).
+  - **Unified Cinematic Search**: Completely overhauled search bar for both modern and legacy YouTube layouts with optimized contrast and pixel-perfect vertical centering.
+  - **Intelligent Typography**: System-wide Google Sans integration with a reliable "Revert to Default" toggle that works universally across all components and carousels.
+  - **Smooth Layout Transitions**: Implemented `flex-wrap` and grid logic to eliminate layout jumps during density switching.
   - **Cinematic Sidebar**: Rewritten expand/collapse logic with smooth transform transitions and synchronized page manager shifts.
-  - **Smart SPA Navigation**: Intelligent polling ensures the carousel reliably injects during internal site navigation without requiring a page refresh.
-  - **3 Videos Per Row**: Toggle between 3 or 4 videos in the home grid for better visibility.
 - **Video Sidebar**
   - **Hide Recommended**: Removes the related videos sidebar on watch pages.
   - **Hide Live Chat**: Removes the live chat panel during streams.
@@ -58,7 +59,7 @@ This major update brings the premium Horizon for YouTube™ experience to the **
 
 ## Installation (Developer Mode)
 
-1. **Download**: Grab the latest release ZIP [here](https://github.com/user-attachments/files/27355650/YouTube.Pro.zip).
+1. **Download**: Grab the latest release ZIP [here](https://github.com/user-attachments/files/27355650/Horizon.Pro.zip).
 2. **Extract**: Unzip the folder to a permanent location.
 3. **Chrome Extensions**: Open Chrome and navigate to `chrome://extensions/`.
 4. **Developer Mode**: Enable the toggle in the top right.
@@ -69,7 +70,7 @@ This major update brings the premium Horizon for YouTube™ experience to the **
 
 ## Design Philosophy
 
-YouTube Pro is built on the principle of **Intentional Viewing**. We believe the interface should get out of the way of the content. By utilizing modern CSS techniques and subtle JS-driven enhancements, we've created a skin that feels native yet significantly more premium than the standard UI.
+Horizon Pro is built on the principle of **Intentional Viewing**. We believe the interface should get out of the way of the content. By utilizing modern CSS techniques and subtle JS-driven enhancements, we've created a skin that feels native yet significantly more premium than the standard UI.
 
 ---
 

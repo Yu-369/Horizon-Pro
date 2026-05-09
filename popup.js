@@ -1,14 +1,15 @@
-// popup.js — YouTube Pro Settings
+
 
 const SECTIONS = [
   {
-    id: 'ytpro', label: 'YouTube Pro',
+    id: 'ytpro', label: 'Horizon Pro',
     icon: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/>',
     defaultOpen: true,
     toggles: [
       { key: 'enableCarousel', label: 'Refined carousel', desc: 'Cinematic carousel on the homepage', defaultVal: true },
-      { key: 'gridThreeVideos', label: '3 videos per row', desc: 'Show 3 instead of 4 videos per row', defaultVal: false }
-    ]
+      { key: 'useDefaultFont', label: 'Use default YouTube font', desc: 'Revert to Roboto instead of SF Pro' }
+    ],
+    slider: { key: 'gridColumns', label: 'Videos per row', desc: 'Adjust the grid density on home and subscriptions', min: 3, max: 6, defaultVal: 4 }
   },
   {
     id: 'sidebar', label: 'Video sidebar',
@@ -53,7 +54,8 @@ const SECTIONS = [
       { key: 'hideTopHeader', label: 'Hide top header', desc: 'Entire masthead bar at the top' },
       { key: 'hideNotifBell', label: 'Hide notification bell', desc: 'Bell icon in the top bar' },
       { key: 'hideMoreYT', label: 'Hide "More from YouTube"', desc: 'Extra links in sidebar footer' },
-      { key: 'hidePlayables', label: 'Hide Playables', desc: 'Playables games shelf and sidebar link' }
+      { key: 'hidePlayables', label: 'Hide Playables', desc: 'Playables games shelf and sidebar link' },
+      { key: 'hideSectionShelves', label: 'Hide section shelves', desc: '"Explore topics", news, and other promoted sections', defaultVal: true }
     ]
   },
   {
@@ -69,7 +71,18 @@ const SECTIONS = [
     toggles: [
       { key: 'disableAutoplay', label: 'Disable autoplay', desc: 'Prevent next video from auto-playing', defaultVal: true },
       { key: 'disableAnnotations', label: 'Disable annotations', desc: 'In-video annotation overlays', defaultVal: true }
-    ]
+    ],
+    select: { key: 'videoQuality', label: 'Preferred quality', desc: 'Force video quality on every video', defaultVal: 'auto', options: [
+      { value: 'auto', label: 'Auto (default)' },
+      { value: '2160', label: '4K (2160p)' },
+      { value: '1440', label: '1440p' },
+      { value: '1080', label: '1080p' },
+      { value: '720', label: '720p' },
+      { value: '480', label: '480p' },
+      { value: '360', label: '360p' },
+      { value: '240', label: '240p' },
+      { value: '144', label: '144p' }
+    ]}
   }
 ];
 
@@ -87,11 +100,11 @@ function makeSVGElement(innerPath) {
     fill: 'none', stroke: 'currentColor', 'stroke-width': '2',
     'stroke-linecap': 'round', 'stroke-linejoin': 'round'
   });
-  // Since sec.icon is a string of SVG elements (paths, circles etc),
-  // we can safely parse it if we trust the SECTIONS constant,
-  // but to be truly safe, we'll use a template approach or set it as innerHTML
-  // on a temporary element then move children.
-  // Given SECTIONS is internal, we'll use a safer approach:
+  
+  
+  
+  
+  
   const parser = new DOMParser();
   const doc = parser.parseFromString(`<svg xmlns="http://www.w3.org/2000/svg">${innerPath}</svg>`, 'image/svg+xml');
   const children = Array.from(doc.documentElement.childNodes);
@@ -109,7 +122,7 @@ function buildUI(settings) {
 
     const isOpen = sec.defaultOpen || false;
 
-    // Header
+    
     const header = document.createElement('button');
     header.className = 'ytpro-section-header';
     header.setAttribute('aria-expanded', isOpen);
@@ -133,7 +146,7 @@ function buildUI(settings) {
     header.appendChild(labelSpan);
     header.appendChild(chevron);
 
-    // Body
+    
     const body = document.createElement('div');
     body.className = 'ytpro-section-body' + (isOpen ? ' open' : '');
 
@@ -165,7 +178,167 @@ function buildUI(settings) {
       body.appendChild(row);
     });
 
-    // Toggle section
+    
+    if (sec.slider) {
+      const s = sec.slider;
+      const val = settings[s.key] !== undefined ? settings[s.key] : s.defaultVal;
+      const row = document.createElement('div');
+      row.className = 'ytpro-slider-row';
+
+      const top = document.createElement('div');
+      top.className = 'ytpro-slider-top';
+
+      const info = document.createElement('div');
+      info.className = 'ytpro-toggle-info';
+      const sliderLabel = document.createElement('span');
+      sliderLabel.className = 'ytpro-toggle-label';
+      sliderLabel.textContent = s.label;
+      const sliderDesc = document.createElement('span');
+      sliderDesc.className = 'ytpro-toggle-desc';
+      sliderDesc.textContent = s.desc;
+      info.appendChild(sliderLabel);
+      info.appendChild(sliderDesc);
+
+      const badge = document.createElement('span');
+      badge.className = 'ytpro-slider-badge';
+      badge.textContent = val;
+
+      top.appendChild(info);
+      top.appendChild(badge);
+
+      const trackWrap = document.createElement('div');
+      trackWrap.className = 'ytpro-slider-track-wrap';
+
+      const input = document.createElement('input');
+      input.type = 'range';
+      input.className = 'ytpro-slider';
+      input.min = s.min;
+      input.max = s.max;
+      input.step = 1;
+      input.value = val;
+      input.dataset.key = s.key;
+      
+      const pct = ((val - s.min) / (s.max - s.min)) * 100;
+      trackWrap.style.setProperty('--slider-pct', pct + '%');
+      trackWrap.style.setProperty('--slider-ratio', pct / 100);
+
+      const trackBg = document.createElement('div');
+      trackBg.className = 'ytpro-slider-track-bg';
+
+      const ticks = document.createElement('div');
+      ticks.className = 'ytpro-slider-ticks';
+      for (let i = s.min; i <= s.max; i++) {
+        const tick = document.createElement('span');
+        tick.className = 'ytpro-slider-tick';
+        tick.textContent = i;
+        if (i < val) tick.classList.add('active');
+        ticks.appendChild(tick);
+      }
+
+      trackWrap.appendChild(trackBg);
+      trackWrap.appendChild(ticks);
+      trackWrap.appendChild(input);
+
+      row.appendChild(top);
+      row.appendChild(trackWrap);
+      body.appendChild(row);
+
+      let sliderDebounce = null;
+      input.addEventListener('input', () => {
+        const v = parseInt(input.value, 10);
+        badge.textContent = v;
+        const p = ((v - s.min) / (s.max - s.min)) * 100;
+        trackWrap.style.setProperty('--slider-pct', p + '%');
+        trackWrap.style.setProperty('--slider-ratio', p / 100);
+        ticks.querySelectorAll('.ytpro-slider-tick').forEach((t, idx) => {
+          t.classList.toggle('active', idx < v - s.min);
+        });
+        
+        
+        if (sliderDebounce) clearTimeout(sliderDebounce);
+        sliderDebounce = setTimeout(() => {
+          const update = {};
+          update[s.key] = v;
+          chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            if (tabs[0]?.id) {
+              chrome.tabs.sendMessage(tabs[0].id, { type: 'ytpro-settings-update', settings: update }).catch(() => {});
+            }
+          });
+        }, 30);
+      });
+
+      
+      input.addEventListener('change', () => {
+        const v = parseInt(input.value, 10);
+        const update = {};
+        update[s.key] = v;
+        chrome.storage.sync.set(update);
+      });
+    }
+
+    
+    if (sec.select) {
+      const s = sec.select;
+      const val = settings[s.key] !== undefined ? settings[s.key] : s.defaultVal;
+      const row = document.createElement('div');
+      row.className = 'ytpro-select-row';
+
+      const info = document.createElement('div');
+      info.className = 'ytpro-toggle-info';
+      const selectLabel = document.createElement('span');
+      selectLabel.className = 'ytpro-toggle-label';
+      selectLabel.textContent = s.label;
+      const selectDesc = document.createElement('span');
+      selectDesc.className = 'ytpro-toggle-desc';
+      selectDesc.textContent = s.desc;
+      info.appendChild(selectLabel);
+      info.appendChild(selectDesc);
+
+      const selectWrap = document.createElement('div');
+      selectWrap.className = 'ytpro-select-wrap';
+      const select = document.createElement('select');
+      select.className = 'ytpro-select';
+      select.dataset.key = s.key;
+      s.options.forEach(opt => {
+        const option = document.createElement('option');
+        option.value = opt.value;
+        option.textContent = opt.label;
+        if (opt.value === val) option.selected = true;
+        select.appendChild(option);
+      });
+      selectWrap.appendChild(select);
+
+      
+      const chevronSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+      chevronSvg.setAttribute('class', 'ytpro-select-chevron');
+      chevronSvg.setAttribute('width', '12');
+      chevronSvg.setAttribute('height', '12');
+      chevronSvg.setAttribute('viewBox', '0 0 24 24');
+      chevronSvg.setAttribute('fill', 'none');
+      chevronSvg.setAttribute('stroke', 'currentColor');
+      chevronSvg.setAttribute('stroke-width', '2.5');
+      const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      polyline.setAttribute('points', '6 9 12 15 18 9');
+      chevronSvg.appendChild(polyline);
+      selectWrap.appendChild(chevronSvg);
+
+      row.appendChild(info);
+      row.appendChild(selectWrap);
+      body.appendChild(row);
+
+      select.addEventListener('change', () => {
+        const update = {};
+        update[s.key] = select.value;
+        chrome.storage.sync.set(update);
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+          if (tabs[0]?.id) {
+            chrome.tabs.sendMessage(tabs[0].id, { type: 'ytpro-settings-update', settings: update }).catch(() => {});
+          }
+        });
+      });
+    }
+
+    
     header.addEventListener('click', () => {
       const expanded = header.getAttribute('aria-expanded') === 'true';
       header.setAttribute('aria-expanded', !expanded);
@@ -177,7 +350,7 @@ function buildUI(settings) {
     container.appendChild(section);
   });
 
-  // Listen for changes
+  
   container.addEventListener('switch-change', (e) => {
     if (e.target.matches('m3-switch[data-key]')) {
       const key = e.target.dataset.key;
@@ -185,7 +358,7 @@ function buildUI(settings) {
       const update = {};
       update[key] = val;
       chrome.storage.sync.set(update);
-      // Relay to active tab
+      
       chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         if (tabs[0]?.id) {
           chrome.tabs.sendMessage(tabs[0].id, { type: 'ytpro-settings-update', settings: update }).catch(() => {});
@@ -195,18 +368,24 @@ function buildUI(settings) {
   });
 }
 
-// Get all setting keys with defaults
+
 function getDefaults() {
   const defaults = {};
   SECTIONS.forEach(sec => {
     sec.toggles.forEach(t => {
       defaults[t.key] = t.defaultVal || false;
     });
+    if (sec.slider) {
+      defaults[sec.slider.key] = sec.slider.defaultVal;
+    }
+    if (sec.select) {
+      defaults[sec.select.key] = sec.select.defaultVal;
+    }
   });
   return defaults;
 }
 
-// Init
+
 chrome.storage.sync.get(getDefaults(), (settings) => {
   buildUI(settings);
 });

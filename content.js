@@ -1,6 +1,6 @@
-// content.js — YouTube Pro Extension
 
-// ─── Settings Keys → CSS Classes ───
+
+
 const SETTING_CLASS_MAP = {
   hideRecommended: 'ytpro-hide-recommended',
   hideLiveChat: 'ytpro-hide-livechat',
@@ -19,34 +19,41 @@ const SETTING_CLASS_MAP = {
   hideMoreYT: 'ytpro-hide-more-yt',
   hidePlayables: 'ytpro-hide-playables',
   hideIrrelevantSearch: 'ytpro-hide-irrelevant-search',
+  hideSectionShelves: 'ytpro-hide-section-shelves',
   disableAnnotations: 'ytpro-disable-annotations',
-  gridThreeVideos: 'ytpro-grid-3'
+  useDefaultFont: 'ytpro-default-font'
 };
 
 const DEFAULTS = {
-  enableCarousel: true, gridThreeVideos: false,
+  enableCarousel: true, gridColumns: 4,
   hideRecommended: false, hideLiveChat: false, hidePlaylist: false,
   hideShorts: true, hideEndScreen: false, hideEndCards: false,
   hideComments: false, hideMixRadio: true, hideMerch: true,
   hideVideoButtons: false, hideChannel: false, hideDescription: false,
   hideTopHeader: false, hideNotifBell: false,
-  hideMoreYT: false, hidePlayables: false, hideIrrelevantSearch: true,
-  disableAutoplay: true, disableAnnotations: true
+  hideMoreYT: false, hidePlayables: false, hideIrrelevantSearch: true, hideSectionShelves: true,
+  disableAutoplay: true, disableAnnotations: true,
+  useDefaultFont: false, videoQuality: 'auto'
 };
 
 let currentSettings = { ...DEFAULTS };
 
-// ─── Apply Settings as Body Classes ───
+
 function applySettings(settings) {
   Object.assign(currentSettings, settings);
   for (const [key, cls] of Object.entries(SETTING_CLASS_MAP)) {
     document.body.classList.toggle(cls, !!currentSettings[key]);
   }
-  // JS-driven features
+  
   disableAutoplay();
-  // Carousel active class for padding control
+  forceVideoQuality();
+  
+  [3, 4, 5, 6].forEach(n => document.body.classList.remove('ytpro-grid-' + n));
+  const cols = currentSettings.gridColumns || 4;
+  if (cols !== 4) document.body.classList.add('ytpro-grid-' + cols);
+  
   document.body.classList.toggle('ytpro-carousel-active', !!currentSettings.enableCarousel);
-  // Carousel
+  
   const wrapper = document.querySelector('.visiontube-carousel-wrapper');
   if (!currentSettings.enableCarousel && wrapper) wrapper.remove();
   const isEligible = window.location.pathname === '/' || window.location.pathname === '/feed/subscriptions';
@@ -55,14 +62,14 @@ function applySettings(settings) {
   }
 }
 
-// ─── Load settings then apply ───
+
 function initSettings() {
   if (chrome?.storage?.sync) {
     chrome.storage.sync.get(DEFAULTS, (s) => applySettings(s));
   }
 }
 
-// ─── Listen for live updates from popup / background ───
+
 if (chrome?.runtime?.onMessage) {
   chrome.runtime.onMessage.addListener((msg) => {
     if (msg.type === 'ytpro-settings-update' && msg.settings) {
@@ -71,7 +78,7 @@ if (chrome?.runtime?.onMessage) {
   });
 }
 
-// ─── Font Injection ───
+
 function injectFonts() {
   if (!document.head) { requestAnimationFrame(injectFonts); return; }
   if (!document.querySelector('link[href*="Google+Sans"]')) {
@@ -79,22 +86,24 @@ function injectFonts() {
     pc1.rel = 'preconnect'; pc1.href = 'https://fonts.googleapis.com';
     document.head.appendChild(pc1);
     const pc2 = document.createElement('link');
-    pc2.rel = 'preconnect'; pc2.href = 'https://fonts.gstatic.com'; pc2.crossOrigin = 'anonymous';
+    pc2.rel = 'preconnect'; pc2.href = 'https://fonts.gstatic.com';
     document.head.appendChild(pc2);
     const fontLink = document.createElement('link');
-    fontLink.href = 'https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap';
+    fontLink.href = 'https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;600;700&display=swap';
     fontLink.rel = 'stylesheet';
     document.head.appendChild(fontLink);
   }
 }
 injectFonts();
 
-// ─── Blur Bar Nuke ───
 const NUKE_SELECTOR =
-  'ytd-rich-grid-renderer > #header, ytd-rich-grid-renderer > #header.ytd-rich-grid-renderer, ' +
-  '#chips-wrapper, iron-selector#chips, yt-chip-cloud-renderer, ' +
-  'ytd-feed-filter-chip-bar-renderer, #masthead-ad, ' +
-  'ytd-statement-banner-renderer, ytd-banner-promo-renderer, #frosted-glass';
+  'ytd-browse[page-subtype="home"] ytd-rich-grid-renderer > #header, ' +
+  'ytd-browse[page-subtype="home"] ytd-rich-grid-renderer > #header.ytd-rich-grid-renderer, ' +
+  'ytd-browse[page-subtype="home"] #chips-wrapper, ' +
+  'ytd-browse[page-subtype="home"] iron-selector#chips, ' +
+  'ytd-browse[page-subtype="home"] yt-chip-cloud-renderer, ' +
+  'ytd-browse[page-subtype="home"] ytd-feed-filter-chip-bar-renderer, ' +
+  '#masthead-ad, ytd-statement-banner-renderer, ytd-banner-promo-renderer, #frosted-glass';
 const NUKE_STYLE = 'display:none!important;height:0!important;max-height:0!important;min-height:0!important;margin:0!important;padding:0!important;overflow:hidden!important;position:absolute!important;visibility:hidden!important;pointer-events:none!important;';
 
 function nukeBlurBar() {
@@ -102,8 +111,8 @@ function nukeBlurBar() {
 }
 nukeBlurBar();
 
-// ─── Fix: Prevent floating ad overlays from covering the carousel ───
-// Does NOT remove ads — just pushes their z-index behind the carousel
+
+
 const AD_OVERLAY_SELECTOR =
   'ytd-brand-video-singleton-renderer, ytd-promoted-sparkles-web-renderer, ' +
   'ytd-display-ad-renderer, ytd-in-feed-ad-layout-renderer, ' +
@@ -112,12 +121,12 @@ const AD_OVERLAY_SELECTOR =
 function fixCarouselAdOverlap() {
   const carousel = document.querySelector('.visiontube-carousel-wrapper');
   if (!carousel) return;
-  // Push any ad overlays behind the carousel
+  
   document.querySelectorAll(AD_OVERLAY_SELECTOR).forEach(ad => {
     ad.style.position = 'relative';
     ad.style.zIndex = '0';
   });
-  // Also check parent sections that might contain floating ads
+  
   document.querySelectorAll('ytd-rich-section-renderer').forEach(section => {
     if (section.querySelector(AD_OVERLAY_SELECTOR)) {
       section.style.position = 'relative';
@@ -126,7 +135,7 @@ function fixCarouselAdOverlap() {
   });
 }
 
-// ─── Search Bar Placeholder + Hide "You >" ───
+
 function fixSearchAndGuide() {
   const searchInput = document.querySelector('input#search, input.ytSearchboxComponentInput');
   if (searchInput && searchInput.placeholder !== 'Search') searchInput.placeholder = 'Search';
@@ -141,7 +150,7 @@ function fixSearchAndGuide() {
   });
 }
 
-// ─── JS-Driven Feature: Disable Autoplay ───
+
 function disableAutoplay() {
   const btn = document.querySelector('.ytp-autonav-toggle-button, button[data-tooltip-target-id="ytp-autonav-toggle-button"], button[aria-label^="Autoplay"]');
   if (!btn) return;
@@ -152,14 +161,14 @@ function disableAutoplay() {
   
   const isChecked = ariaChecked === 'true' || ariaLabel.includes('is on') || title.includes('is on');
   
-  // Disable Autoplay setting is ON -> turn autoplay OFF
+  
   if (currentSettings.disableAutoplay && isChecked && !btn.dataset.ytproAutoplayHandled) {
     btn.dataset.ytproAutoplayHandled = 'true';
     btn.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     btn.dispatchEvent(new MouseEvent('mouseup', { bubbles: true }));
     btn.click();
   } 
-  // Disable Autoplay setting is OFF -> turn autoplay ON
+  
   else if (!currentSettings.disableAutoplay && !isChecked && !btn.dataset.ytproAutoplayHandled) {
     btn.dataset.ytproAutoplayHandled = 'true';
     btn.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
@@ -168,7 +177,39 @@ function disableAutoplay() {
   }
 }
 
-// ─── JS-Driven Tagger: Irrelevant Search Results ───
+
+const QUALITY_MAP = {
+  '2160': 'hd2160', '1440': 'hd1440', '1080': 'hd1080',
+  '720': 'hd720', '480': 'large', '360': 'medium', '240': 'small', '144': 'tiny'
+};
+
+function injectQualityScript() {
+  if (document.getElementById('ytpro-quality-script')) return;
+  const script = document.createElement('script');
+  script.id = 'ytpro-quality-script';
+  script.src = chrome.runtime.getURL('inject-quality.js');
+  (document.head || document.documentElement).appendChild(script);
+}
+
+function forceVideoQuality() {
+  injectQualityScript();
+  if (currentSettings.videoQuality !== 'auto') {
+    const mapped = QUALITY_MAP[currentSettings.videoQuality];
+    if (mapped) {
+      document.body.dataset.ytproQuality = mapped;
+      window.dispatchEvent(new CustomEvent('ytpro-force-quality'));
+    }
+  } else {
+    document.body.dataset.ytproQuality = 'auto';
+  }
+}
+
+function attachQualityListener() {
+  
+  forceVideoQuality();
+}
+
+
 function tagIrrelevantSearchResults() {
   if (!window.location.pathname.startsWith('/results')) return;
   const labels = ['related to your search', 'latest from', 'searches related to', 'people also search for', 'people also watched', 'for you', 'previously watched'];
@@ -182,7 +223,7 @@ function tagIrrelevantSearchResults() {
   });
 }
 
-// ─── JS-Driven Tagger: Mix items ───
+
 function tagMixItems() {
   document.querySelectorAll('ytd-rich-item-renderer:not(.ytpro-mix-item), ytd-compact-video-renderer:not(.ytpro-mix-item), ytd-video-renderer:not(.ytpro-mix-item), yt-lockup-view-model:not(.ytpro-mix-item), .yt-lockup-view-model-wiz:not(.ytpro-mix-item), ytd-grid-video-renderer:not(.ytpro-mix-item)').forEach(el => {
     const links = Array.from(el.querySelectorAll('a'));
@@ -194,7 +235,7 @@ function tagMixItems() {
   });
 }
 
-// ─── JS-Driven Tagger: Playables ───
+
 function tagPlayablesShelf() {
   document.querySelectorAll('ytd-rich-section-renderer:not(.ytpro-playables-shelf)').forEach(el => {
     const title = el.querySelector('#title, .title, span, yt-formatted-string, .yt-core-attributed-string')?.textContent?.trim() || '';
@@ -204,7 +245,7 @@ function tagPlayablesShelf() {
   });
 }
 
-// ─── MutationObserver ───
+
 let observerDebounce = null;
 const mainObserver = new MutationObserver(() => {
   if (observerDebounce) return;
@@ -217,6 +258,8 @@ const mainObserver = new MutationObserver(() => {
     tagMixItems();
     tagPlayablesShelf();
     disableAutoplay();
+    attachQualityListener();
+    forceVideoQuality();
     const isEligiblePage = window.location.pathname === '/' || window.location.pathname === '/feed/subscriptions';
     if (currentSettings.enableCarousel && isEligiblePage && !document.querySelector('.visiontube-carousel-wrapper')) {
       buildCarousel();
@@ -234,11 +277,11 @@ startObserving();
 fixSearchAndGuide();
 initSettings();
 
-// ─── Listen for real-time settings changes from popup ───
+
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg.type === 'ytpro-settings-update') {
     Object.assign(currentSettings, msg.settings);
-    // Clear autoplay handled flag so it re-evaluates
+    
     if (msg.settings.hasOwnProperty('disableAutoplay')) {
       const btn = document.querySelector('.ytp-autonav-toggle-button, button[data-tooltip-target-id="ytp-autonav-toggle-button"], button[aria-label^="Autoplay"]');
       if (btn) delete btn.dataset.ytproAutoplayHandled;
@@ -251,7 +294,7 @@ document.addEventListener('yt-navigate-finish', () => {
   const btn = document.querySelector('.ytp-autonav-toggle-button, button[data-tooltip-target-id="ytp-autonav-toggle-button"], button[aria-label^="Autoplay"]');
   if (btn) delete btn.dataset.ytproAutoplayHandled;
 
-  // Clean up old carousel and unhide videos
+  
   const existing = document.querySelector('.visiontube-carousel-wrapper');
   if (existing) existing.remove();
   document.querySelectorAll('.visiontube-hidden').forEach(v => {
@@ -263,9 +306,11 @@ document.addEventListener('yt-navigate-finish', () => {
     nukeBlurBar();
     fixSearchAndGuide();
     applySettings(currentSettings);
+    attachQualityListener();
+    forceVideoQuality();
   }, 300);
 
-  // Robust polling for carousel rebuild on eligible pages
+  
   const isEligible = window.location.pathname === '/' || window.location.pathname === '/feed/subscriptions';
   if (currentSettings.enableCarousel && isEligible) {
     let attempts = 0;
@@ -283,7 +328,7 @@ document.addEventListener('yt-navigate-finish', () => {
         buildCarousel();
         clearInterval(poller);
       }
-      if (attempts >= 15) clearInterval(poller); // stop after ~7.5s
+      if (attempts >= 15) clearInterval(poller); 
     }, 500);
   }
 });
@@ -314,7 +359,7 @@ setInterval(() => {
   }
 }, 2000);
 
-// ─── Carousel Builder ───
+
 function buildCarousel() {
   if (!currentSettings.enableCarousel) return;
   const isSubscriptions = window.location.pathname === '/feed/subscriptions';
@@ -407,9 +452,9 @@ function buildCarousel() {
     const descText = vid.channel + (vid.metaText ? (' \u00b7 ' + vid.metaText) : '');
     return `<a href="${vid.link}" class="visiontube-slide" style="flex:0 0 100%;width:100%;display:flex;text-decoration:none;color:var(--visiontube-text-primary);overflow:hidden;box-sizing:border-box;">
       <div style="flex:0 0 38%;background:var(--visiontube-surface);padding:32px 36px;display:flex;flex-direction:column;justify-content:center;box-sizing:border-box;border-radius:16px 0 0 16px;">
-        <h2 style="font-family:'Google Sans',sans-serif!important;font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;line-height:1.3;margin:0 0 10px 0;color:var(--visiontube-text-primary);letter-spacing:-0.3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${vid.title}</h2>
+        <h2 style="font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;line-height:1.3;margin:0 0 10px 0;color:var(--visiontube-text-primary);letter-spacing:-0.3px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;">${vid.title}</h2>
         <p style="font-size:13px;color:var(--visiontube-text-secondary);margin:0;line-height:1.5;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${descText}</p>
-        <div style="background:var(--visiontube-text-primary);color:var(--visiontube-bg);border-radius:40px;padding:10px 22px;font-family:'Google Sans',sans-serif!important;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:8px;width:fit-content;margin-top:20px;white-space:nowrap;flex-shrink:0;">
+        <div style="background:var(--visiontube-text-primary);color:var(--visiontube-bg);border-radius:40px;padding:10px 22px;font-weight:600;font-size:13px;display:inline-flex;align-items:center;gap:8px;width:fit-content;margin-top:20px;white-space:nowrap;flex-shrink:0;">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg>
           Play Video
         </div>
@@ -422,11 +467,11 @@ function buildCarousel() {
   
   const pageTitle = isSubscriptions ? 'Featured' : 'Home';
   const bottomHeadingHTML = isSubscriptions ? '' : `<div style="margin:32px 0 24px 0;">
-      <h2 style="font-family:'Google Sans',sans-serif!important;font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;color:var(--visiontube-text-primary);margin:0;letter-spacing:-0.3px;padding:0;">For You</h2>
+      <h2 style="font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;color:var(--visiontube-text-primary);margin:0;letter-spacing:-0.3px;padding:0;">For You</h2>
     </div>`;
 
   const carouselHTML = `<div class="visiontube-carousel-container" style="display:flex;flex-direction:column;width:100%;box-sizing:border-box;margin-bottom:0px;padding-top:24px;">
-    <h1 style="font-family:'Google Sans',sans-serif!important;font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;color:var(--visiontube-text-primary);margin:0 0 24px 0;letter-spacing:-0.3px;padding:0;">${pageTitle}</h1>
+    <h1 style="font-optical-sizing:auto;font-weight:700;font-style:normal;font-variation-settings:'GRAD' 0;font-size:22px;color:var(--visiontube-text-primary);margin:0 0 24px 0;letter-spacing:-0.3px;padding:0;">${pageTitle}</h1>
     <div style="display:flex;gap:16px;height:280px;width:100%;align-items:stretch;">
       <div style="flex:1;position:relative;overflow:hidden;min-width:0;border-radius:16px;">
         <div class="visiontube-carousel-track" style="display:flex;width:100%;height:100%;transition:transform 0.6s cubic-bezier(0.25,1,0.5,1);transform:translateX(0%);will-change:transform;">${slidesHTML}</div>
@@ -447,10 +492,10 @@ function buildCarousel() {
   const parsed = parser.parseFromString(carouselHTML, 'text/html');
   while (parsed.body.firstChild) container.appendChild(document.adoptNode(parsed.body.firstChild));
 
-  // Always prepend to guarantee it's above headers like "Latest" and filters
+  
   feed.prepend(container);
 
-  // Thumbnail fallback
+  
   container.querySelectorAll('img.visiontube-fallback-img').forEach(img => {
     const handleErr = function () {
       const vidId = img.getAttribute('data-vid');
@@ -465,7 +510,7 @@ function buildCarousel() {
 
 
 
-  // Slideshow logic
+  
   let currentSlide = 0, isTransitioning = false, isHovered = false;
   const track = container.querySelector('.visiontube-carousel-track');
   const dots = container.querySelectorAll('.visiontube-dot');

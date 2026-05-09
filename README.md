@@ -1,15 +1,15 @@
-# YouTube Pro
+# Horizon for YouTube™
 
-Experience YouTube with a stunning cinematic redesign. YouTube Pro transforms the standard interface into a premium, focused, and ultra-modern experience by stripping away algorithmic noise and clutter.
+Experience YouTube with a stunning cinematic redesign. Horizon for YouTube™ transforms the standard interface into a premium, focused, and ultra-modern experience by stripping away algorithmic noise and clutter.
 
 ![Hero Banner](https://github.com/user-attachments/assets/7d20b5eb-f032-43f6-88f4-d2d2fa93e266)
 
 ## 🆕 Latest Release (v1.2.0)
 
-This major update brings the premium YouTube Pro experience to the **Subscriptions page**, and overhauls the **Sidebar animations** for a truly cinematic feel.
+This major update brings the premium Horizon for YouTube™ experience to the **Subscriptions page**, and overhauls the **Sidebar animations** for a truly cinematic feel.
 
 ### 🛠 Full Feature List
-- **YouTube Pro Core**
+- **Horizon for YouTube™ Core**
   - **Dynamic Featured Carousel**: Cinematic hero section now available on both **Home** and **Subscriptions** feeds.
   - **Premium Typography**: Native YouTube headings ("Latest", "All subscriptions", etc.) now utilize Google Sans Bold (22px) for a unified, modern aesthetic.
   - **Cinematic Sidebar**: Rewritten expand/collapse logic with smooth transform transitions and synchronized page manager shifts.
